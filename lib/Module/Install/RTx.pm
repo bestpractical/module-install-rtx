@@ -1,7 +1,7 @@
 package Module::Install::RTx;
 use Module::Install::Base; @ISA = qw(Module::Install::Base);
 
-$Module::Install::RTx::VERSION = '0.10';
+$Module::Install::RTx::VERSION = '0.11';
 
 use strict;
 use FindBin;

@@ -1,3 +1,7 @@
+[Changes for 0.11 - 2005-]
+
+* make initdb now prompts for dba password.
+
 [Changes for 0.10 - 2004-09-09]
 
 * "make initialize-database" added as an alias to "make initdb",

@@ -1,3 +1,9 @@
+[ Changes for 0.20 ]
+
+* Support for new RT 3.7 "RT Plugin" mechanism
+* No longer tries to write to the global local perl man and site directories
+  (packlists and manpages), instead installing them within the RT hierarchy
+
 [Changes for 0.11 - 2005-]
 
 * make initdb now prompts for dba password.

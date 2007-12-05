@@ -1,4 +1,4 @@
-[ Changes for 0.20 ]
+[ Changes for 0.20 2007-12-05]
 
 * Support for new RT 3.7 "RT Plugin" mechanism
 * No longer tries to write to the global local perl man and site directories

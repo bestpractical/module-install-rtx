@@ -1,3 +1,8 @@
+[Changes for 0.22 2008-03-25]
+
+* Add local lib path to the @INC when we call any script that may
+  load RT config.
+
 [Changes for 0.21 2007-12-07]
 
 * LICENSING CHANGE: This compilation and all individual files in it

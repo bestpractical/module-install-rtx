@@ -1,10 +1,14 @@
 package Module::Install::RTx;
-use Module::Install::Base;
-@ISA = qw(Module::Install::Base);
 
-$Module::Install::RTx::VERSION = '0.20';
-
+use 5.008;
 use strict;
+use warnings;
+no warnings 'once';
+
+use Module::Install::Base;
+use base 'Module::Install::Base';
+our $VERSION = '0.21';
+
 use FindBin;
 use File::Glob     ();
 use File::Basename ();
@@ -20,10 +24,10 @@ sub RTx {
 
     $self->name("$RTx-$name")
         unless $self->name;
+    $self->all_from( -e "$name.pm" ? "$name.pm" : "lib/$RTx/$fname.pm" )
+        unless $self->version;
     $self->abstract("RT $name Extension")
         unless $self->abstract;
-    $self->version_from( -e "$name.pm" ? "$name.pm" : "lib/$RTx/$fname.pm" )
-        unless $self->version;
 
     my @prefixes = (qw(/opt /usr/local /home /usr /sw ));
     my $prefix   = $ENV{PREFIX};
@@ -60,7 +64,10 @@ sub RTx {
     my $with_subdirs = $ENV{WITH_SUBDIRS};
     @ARGV = grep { /WITH_SUBDIRS=(.*)/ ? ( ( $with_subdirs = $1 ), 0 ) : 1 }
         @ARGV;
-    my %subdirs = map { $_ => 1 } split( /\s*,\s*/, $with_subdirs );
+
+    my %subdirs;
+    %subdirs = map { $_ => 1 } split( /\s*,\s*/, $with_subdirs )
+        if defined $with_subdirs;
 
     foreach (qw(bin etc html po sbin var)) {
         next unless -d "$FindBin::Bin/$_";
@@ -178,20 +185,16 @@ Module::Install::RTx - RT extension installer
 
 =head1 VERSION
 
-This document describes version 0.10 of Module::Install::RTx, released
-October 1, 2004.
+This document describes version 0.21 of Module::Install::RTx, released
+December 7, 2007.
 
 =head1 SYNOPSIS
 
 In the F<Makefile.PL> of the C<RTx-Foo> module:
 
     use inc::Module::Install;
-
-    RTx('Foo');
-    author('Your Name <your@email.com>');
-    license('perl');
-
-    &WriteAll;
+    RTx 'Foo';
+    WriteAll;
 
 =head1 DESCRIPTION
 
@@ -237,7 +240,7 @@ C<Makefile.PL>, like this:
 
 Path to the RT installation that contains a valid F<lib/RT.pm>.
 
-=cut
+=back
 
 =head1 SEE ALSO
 
@@ -247,15 +250,32 @@ L<http://www.bestpractical.com/rt/>
 
 =head1 AUTHORS
 
-Autrijus Tang <autrijus@autrijus.org>
+Audrey Tang <cpan@audreyt.org>
 
 =head1 COPYRIGHT
 
-Copyright 2003, 2004 by Autrijus Tang E<lt>autrijus@autrijus.orgE<gt>.
+Copyright 2003, 2004, 2007 by Audrey Tang E<lt>cpan@audreyt.orgE<gt>.
 
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+This software is released under the MIT license cited below.
 
-See L<http://www.perl.com/perl/misc/Artistic.html>
+=head2 The "MIT" License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+DEALINGS IN THE SOFTWARE.
 
 =cut

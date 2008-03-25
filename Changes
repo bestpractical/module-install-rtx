@@ -1,10 +1,22 @@
+[Changes for 0.21 2007-12-07]
+
+* LICENSING CHANGE: This compilation and all individual files in it
+  are now under the permissive "MIT" license.  See the COPYRIGHT
+  section in README for the new terms.
+
+* Cleanup on POD, changelog, README, etc.
+
+* Bump dependency of Module::Install::Admin to 0.40, so we can make use of
+  all_from() and drop the parentheses in Makefile.PL commands.
+
 [ Changes for 0.20 2007-12-05]
 
-* Support for new RT 3.7 "RT Plugin" mechanism
-* No longer tries to write to the global local perl man and site directories
-  (packlists and manpages), instead installing them within the RT hierarchy
+* Support for new RT 3.7 "RT Plugin" mechanism.
 
-[Changes for 0.11 - 2005-]
+* No longer tries to write to the global local perl man and site directories
+  (packlists and manpages), instead installing them within the RT hierarchy.
+
+[Changes for 0.11 - 2005-02-26]
 
 * make initdb now prompts for dba password.
 

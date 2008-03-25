@@ -3,7 +3,10 @@
 use strict;
 print "1..1\n";
 
-if (!-s 'SIGNATURE') {
+if (!$ENV{TEST_SIGNATURE}) {
+    print "ok 1 # skip set the environment variable TEST_SIGNATURE to enable this test\n";
+}
+elsif (!-s 'SIGNATURE') {
     print "ok 1 # skip No signature file found\n";
 }
 elsif (!eval { require Module::Signature; 1 }) {

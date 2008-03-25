@@ -1,25 +1,91 @@
-This is the README file for Module::Install::RTx, a helper module
-for RT extension writers to install files into an existing RT
-installation.
+NAME
+    Module::Install::RTx - RT extension installer
 
-Please type "perldoc Module::Install::RTx" after installation to see
-the module usage information.
+VERSION
+    This document describes version 0.21 of Module::Install::RTx, released
+    December 7, 2007.
 
-* Installation
+SYNOPSIS
+    In the Makefile.PL of the "RTx-Foo" module:
 
-Module::Install::RTx uses the standard perl module install process:
+        use inc::Module::Install;
 
-cpansign -v             # optional; see SIGNATURE for details
-perl Makefile.PL
-make
-make test
-make install
+        RTx('Foo');
+        author('Your Name <your@email.com>');
+        license('perl');
 
-* Copyright
+        &WriteAll;
 
-Copyright 2003, 2004 by Autrijus Tang <autrijus@autrijus.org>
+DESCRIPTION
+    This Module::Install extension implements one function, "RTx", that
+    takes the extension name as the only argument.
 
-All rights reserved.  You can redistribute and/or modify
-this bundle under the same terms as Perl itself.
+    It arranges for certain subdirectories to install into the installed RT
+    location, but does not affect the usual "lib" and "t" directories.
 
-See <http://www.perl.com/perl/misc/Artistic.html>.
+    The directory mapping table is as below:
+
+        ./bin   => $RT::LocalPath/bin
+        ./etc   => $RT::LocalPath/etc/$NAME
+        ./html  => $RT::MasonComponentRoot
+        ./po    => $RT::LocalLexiconPath/$NAME
+        ./sbin  => $RT::LocalPath/sbin
+        ./var   => $RT::VarPath/$NAME
+
+    Under the default RT3 layout in /opt and with the extension name "Foo",
+    it becomes:
+
+        ./bin   => /opt/rt3/local/bin
+        ./etc   => /opt/rt3/local/etc/Foo
+        ./html  => /opt/rt3/share/html
+        ./po    => /opt/rt3/local/po/Foo
+        ./sbin  => /opt/rt3/local/sbin
+        ./var   => /opt/rt3/var/Foo
+
+    By default, all these subdirectories will be installed with "make
+    install". you can override this by setting the "WITH_SUBDIRS"
+    environment variable to a comma-delimited subdirectory list, such as
+    "html,sbin".
+
+    Alternatively, you can also specify the list as a command-line option to
+    "Makefile.PL", like this:
+
+        perl Makefile.PL WITH_SUBDIRS=sbin
+
+ENVIRONMENT
+    RTHOME
+        Path to the RT installation that contains a valid lib/RT.pm.
+
+SEE ALSO
+    Module::Install
+
+    <http://www.bestpractical.com/rt/>
+
+AUTHORS
+    Audrey Tang <cpan@audreyt.org>
+
+COPYRIGHT
+    Copyright 2003, 2004, 2007 by Audrey Tang <cpan@audreyt.org>.
+
+    This software is released under the MIT license cited below.
+
+  The "MIT" License
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files (the
+    "Software"), to deal in the Software without restriction, including
+    without limitation the rights to use, copy, modify, merge, publish,
+    distribute, sublicense, and/or sell copies of the Software, and to
+    permit persons to whom the Software is furnished to do so, subject to
+    the following conditions:
+
+    The above copyright notice and this permission notice shall be included
+    in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+

@@ -1,3 +1,9 @@
+[Changes for 0.23 2008-05-09]
+
+* RT now respects the --datafile flag to rt-setup-database when
+  used with --action acl or --action schema.
+  Don't pass the initialdata file when we're doing schema changes
+
 [Changes for 0.22 2008-03-25]
 
 * Add local lib path to the @INC when we call any script that may

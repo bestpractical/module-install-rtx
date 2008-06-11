@@ -183,11 +183,6 @@ __END__
 
 Module::Install::RTx - RT extension installer
 
-=head1 VERSION
-
-This document describes version 0.21 of Module::Install::RTx, released
-December 7, 2007.
-
 =head1 SYNOPSIS
 
 In the F<Makefile.PL> of the C<RTx-Foo> module:

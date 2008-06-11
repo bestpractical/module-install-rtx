@@ -1,10 +1,6 @@
 NAME
     Module::Install::RTx - RT extension installer
 
-VERSION
-    This document describes version 0.21 of Module::Install::RTx, released
-    December 7, 2007.
-
 SYNOPSIS
     In the Makefile.PL of the "RTx-Foo" module:
 

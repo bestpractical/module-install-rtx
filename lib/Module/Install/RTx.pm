@@ -59,6 +59,7 @@ sub RTx {
     $RT::LocalVarPath  ||= $RT::VarPath;
     $RT::LocalPoPath   ||= $RT::LocalLexiconPath;
     $RT::LocalHtmlPath ||= $RT::MasonComponentRoot;
+    $RT::LocalLibPath  ||= "$RT::LocalPath/lib";
 
     my %path;
     my $with_subdirs = $ENV{WITH_SUBDIRS};
@@ -144,10 +145,10 @@ dropdb ::
         $self->makemaker_args( INSTALLSITELIB => "$RT::LocalPath/lib" );
     }
 
-        $self->makemaker_args( INSTALLSITEMAN1DIR => "$RT::LocalPath/man/man1" );
-        $self->makemaker_args( INSTALLSITEMAN3DIR => "$RT::LocalPath/man/man3" );
-        $self->makemaker_args( INSTALLSITEARCH => "$RT::LocalPath/man" );
-        $self->makemaker_args( INSTALLARCHLIB => "$RT::LocalPath/lib" );
+    $self->makemaker_args( INSTALLSITEMAN1DIR => "$RT::LocalPath/man/man1" );
+    $self->makemaker_args( INSTALLSITEMAN3DIR => "$RT::LocalPath/man/man3" );
+    $self->makemaker_args( INSTALLSITEARCH => "$RT::LocalPath/man" );
+
     if (%has_etc) {
         $self->load('RTxInitDB');
         print "For first-time installation, type 'make initdb'.\n";

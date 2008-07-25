@@ -13,6 +13,9 @@ use FindBin;
 use File::Glob     ();
 use File::Basename ();
 
+my @DIRS = qw(etc lib html bin sbin po var);
+my @INDEX_DIRS = qw(lib bin sbin);
+
 sub RTx {
     my ( $self, $name ) = @_;
 
@@ -61,7 +64,6 @@ sub RTx {
     $RT::LocalHtmlPath ||= $RT::MasonComponentRoot;
     $RT::LocalLibPath  ||= "$RT::LocalPath/lib";
 
-    my %path;
     my $with_subdirs = $ENV{WITH_SUBDIRS};
     @ARGV = grep { /WITH_SUBDIRS=(.*)/ ? ( ( $with_subdirs = $1 ), 0 ) : 1 }
         @ARGV;
@@ -69,36 +71,38 @@ sub RTx {
     my %subdirs;
     %subdirs = map { $_ => 1 } split( /\s*,\s*/, $with_subdirs )
         if defined $with_subdirs;
-
-    foreach (qw(bin etc html po sbin var)) {
-        next unless -d "$FindBin::Bin/$_";
-        next if keys %subdirs and !$subdirs{$_};
-        $self->no_index( directory => $_ );
-
-        no strict 'refs';
-        my $varname = "RT::Local" . ucfirst($_) . "Path";
-        $path{$_} = ${$varname} || "$RT::LocalPath/$_";
+    unless ( keys %subdirs ) {
+        $subdirs{$_} = 1 foreach grep -d "$FindBin::Bin/$_", @DIRS;
     }
-
-    $path{$_} .= "/$name" for grep $path{$_}, qw(etc po var);
-    $path{lib} = "$RT::LocalPath/lib" unless keys %subdirs and !$subdirs{'lib'};
 
     # If we're running on RT 3.8 with plugin support, we really wany
     # to install libs, mason templates and po files into plugin specific
     # directories
-    if ($RT::LocalPluginPath) {
-        foreach my $path (qw(lib po html etc bin sbin)) {
-            next unless -d "$FindBin::Bin/$path";
-            next if %subdirs and !$subdirs{$path};
-            $path{$path} = $RT::LocalPluginPath . "/$original_name/$path";
+    my %path;
+    if ( $RT::LocalPluginPath ) {
+        $path{$_} = $RT::LocalPluginPath . "/$original_name/$_"
+            foreach @DIRS;
+    } else {
+        foreach ( @DIRS ) {
+            no strict 'refs';
+            my $varname = "RT::Local" . ucfirst($_) . "Path";
+            $path{$_} = ${$varname} || "$RT::LocalPath/$_";
         }
+
+        $path{$_} .= "/$name" for grep $path{$_}, qw(etc po var);
     }
 
-    my $args = join( ', ', map "q($_)", %path );
-    print "./$_\t=> $path{$_}\n" for sort keys %path;
+    my %index = map { $_ => 1 } @INDEX_DIRS;
+    $self->no_index( directory => $_ ) foreach grep !$index{$_}, @DIRS;
 
-    if ( my @dirs = map { ( -D => $_ ) } grep $path{$_}, qw(bin html sbin) ) {
-        my @po = map { ( -o => $_ ) } grep -f,
+    my $args = join ', ', map "q($_)", map { ($_, $path{$_}) }
+        grep $subdirs{$_}, keys %path;
+
+    print "./$_\t=> $path{$_}\n" for sort keys %subdirs;
+
+    if ( my @dirs = map { ( -D => $_ ) } grep $subdirs{$_}, qw(bin html sbin) ) {
+        my @po = map { ( -o => $_ ) }
+            grep -f,
             File::Glob::bsd_glob("po/*.po");
         $self->postamble(<< ".") if @po;
 lexicons ::
@@ -111,7 +115,7 @@ install ::
 \t\$(NOECHO) \$(PERL) -MExtUtils::Install -e \"install({$args})\"
 .
 
-    if ( $path{var} and -d $RT::MasonDataDir ) {
+    if ( $subdirs{var} and -d $RT::MasonDataDir ) {
         my ( $uid, $gid ) = ( stat($RT::MasonDataDir) )[ 4, 5 ];
         $postamble .= << ".";
 \t\$(NOECHO) chown -R $uid:$gid $path{var}
@@ -139,10 +143,11 @@ dropdb ::
     if ( -e 'etc/initialdata' ) { $has_etc{initialdata}++; }
 
     $self->postamble("$postamble\n");
-    if ( %subdirs and !$subdirs{'lib'} ) {
+    unless ( $subdirs{'lib'} ) {
         $self->makemaker_args( PM => { "" => "" }, );
     } else {
-        $self->makemaker_args( INSTALLSITELIB => "$RT::LocalPath/lib" );
+        $self->makemaker_args( INSTALLSITELIB => $path{'lib'} );
+        $self->makemaker_args( INSTALLARCHLIB => $path{'lib'} );
     }
 
     $self->makemaker_args( INSTALLSITEMAN1DIR => "$RT::LocalPath/man/man1" );

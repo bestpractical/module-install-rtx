@@ -193,11 +193,11 @@ Module::Install::RTx - RT extension installer
 
 =head1 SYNOPSIS
 
-In the F<Makefile.PL> of the C<RTx-Foo> module:
+In the F<Makefile.PL> of the C<RT-Extension-Foo> module:
 
     use inc::Module::Install;
-    RTx 'Foo';
-    WriteAll;
+    RTx 'RT-Extension-Foo';
+    WriteAll();
 
 =head1 DESCRIPTION
 
@@ -234,6 +234,24 @@ Alternatively, you can also specify the list as a command-line option to
 C<Makefile.PL>, like this:
 
     perl Makefile.PL WITH_SUBDIRS=sbin
+
+=head1 CAVEATS
+
+=over 4
+
+=item * Use full name when call RTx method in Makefile.PL, some magic has been
+implemented in this installer to support RTx('Foo') for 'RTx-Foo' extension, but
+life proved that it's bad idea. Code still there for backwards compatibility.
+It will be deleted eventually.
+
+=item * installer want work with RT 3.8.0, as it has some bugs new plugins
+sub-system.
+
+=item * layout of files has been changed between RT 3.6 and RT 3.8, old files
+may influence behaviour of your extension. Recommend people use clean dir on
+upgrade or guide how to remove old versions of your extension.
+
+=back
 
 =head1 ENVIRONMENT
 

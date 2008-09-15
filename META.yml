@@ -16,10 +16,10 @@ no_index:
 provides:
   Module::Install::RTx:
     file: lib/Module/Install/RTx.pm
-    version: 0.23
+    version: 0.24
   Module::Install::RTx::Factory:
     file: lib/Module/Install/RTx/Factory.pm
 requires:
   Module::Install::Admin: 0.4
   perl: 5.8.0
-version: 0.23
+version: 0.24

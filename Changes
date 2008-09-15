@@ -1,3 +1,11 @@
+[Changes for 0.24 2008-09-15]
+
+* updated docs
+* die when target is RT 3.8.0
+* install libs only into one path, don't double-install them
+  on RT 3.8.x
+* delete VERSION from POD, we just always forget to update it
+
 [Changes for 0.23 2008-05-09]
 
 * RT now respects the --datafile flag to rt-setup-database when

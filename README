@@ -2,15 +2,11 @@ NAME
     Module::Install::RTx - RT extension installer
 
 SYNOPSIS
-    In the Makefile.PL of the "RTx-Foo" module:
+    In the Makefile.PL of the "RT-Extension-Foo" module:
 
         use inc::Module::Install;
-
-        RTx('Foo');
-        author('Your Name <your@email.com>');
-        license('perl');
-
-        &WriteAll;
+        RTx 'RT-Extension-Foo';
+        WriteAll();
 
 DESCRIPTION
     This Module::Install extension implements one function, "RTx", that
@@ -47,6 +43,17 @@ DESCRIPTION
     "Makefile.PL", like this:
 
         perl Makefile.PL WITH_SUBDIRS=sbin
+
+CAVEATS
+    * Use full name when call RTx method in Makefile.PL, some magic has been
+    implemented in this installer to support RTx('Foo') for 'RTx-Foo'
+    extension, but life proved that it's bad idea. Code still there for
+    backwards compatibility. It will be deleted eventually.
+    * installer want work with RT 3.8.0, as it has some bugs new plugins
+    sub-system.
+    * layout of files has been changed between RT 3.6 and RT 3.8, old files
+    may influence behaviour of your extension. Recommend people use clean
+    dir on upgrade or guide how to remove old versions of your extension.
 
 ENVIRONMENT
     RTHOME

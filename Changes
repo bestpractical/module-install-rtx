@@ -1,3 +1,8 @@
+[Changes for 0.25 2009-10-08]
+
+* Make prompt for lib path clearer [rt.cpan.org #50328]
+* trim RT.pm from lib paths entered by users
+
 [Changes for 0.24 2008-09-15]
 
 * updated docs

@@ -1,3 +1,8 @@
+[Changes for 0.26 2010-12-14]
+
+* Search RTHOME before searching @INC
+  This works around distribution packages lurking in @INC
+
 [Changes for 0.25 2009-10-08]
 
 * Make prompt for lib path clearer [rt.cpan.org #50328]

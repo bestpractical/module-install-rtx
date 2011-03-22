@@ -43,7 +43,7 @@ sub RTx {
         local @INC = (
             $ENV{RTHOME} ? ( $ENV{RTHOME}, "$ENV{RTHOME}/lib" ) : (),
             @INC,
-            map { ( "$_/rt4/lib", "$_/lib/rt4", "$_/rt3/lib", "$_/lib/rt3", "$_/lib" ) 
+            map { ( "$_/rt4/lib", "$_/lib/rt4", "$_/rt3/lib", "$_/lib/rt3", "$_/lib" )
                 } grep $_, @prefixes
         );
         until ( eval { require RT; $RT::LocalPath } ) {

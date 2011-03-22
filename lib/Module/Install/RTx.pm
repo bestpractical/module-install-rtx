@@ -239,6 +239,12 @@ In the F<Makefile.PL> of the C<RT-Extension-Foo> module:
     RTx 'RT-Extension-Foo';
     WriteAll();
 
+optionally add a
+
+    requires_rt('3.8.9');
+
+to warn if your RT version is too old during install
+
 =head1 DESCRIPTION
 
 This B<Module::Install> extension implements one function, C<RTx>,

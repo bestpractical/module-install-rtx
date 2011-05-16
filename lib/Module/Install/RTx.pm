@@ -13,7 +13,7 @@ use FindBin;
 use File::Glob     ();
 use File::Basename ();
 
-my @DIRS = qw(etc lib html bin sbin po var);
+my @DIRS = qw(etc lib html bin sbin po var static);
 my @INDEX_DIRS = qw(lib bin sbin);
 
 sub RTx {

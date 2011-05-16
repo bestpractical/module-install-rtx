@@ -253,6 +253,8 @@ sub-system.
 may influence behaviour of your extension. Recommend people use clean dir on
 upgrade or guide how to remove old versions of your extension.
 
+=item * to make static dir work, RT 4.2+ is required.
+
 =back
 
 =head1 ENVIRONMENT

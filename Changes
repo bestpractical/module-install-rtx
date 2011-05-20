@@ -1,3 +1,8 @@
+[Changes for 0.29 2011-05-20]
+* add requires_rt to handle requiring an RT version
+  since MakeMaker and Module::Install::AutoInstall can't deal
+  with RT version numbers.
+
 [Changes for 0.28 2011-03-15]
 * search /opt/rt4 for RT.pm
 

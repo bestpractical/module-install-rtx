@@ -5,7 +5,7 @@ use strict;
 use File::Basename ();
 
 sub RTxInitDB {
-    my ($self, $action) = @_;
+    my ($self, $action, $name, $version) = @_;
 
     unshift @INC, substr(delete($INC{'RT.pm'}), 0, -5) if $INC{'RT.pm'};
 
@@ -32,8 +32,12 @@ sub RTxInitDB {
         "--datadir"     => "etc",
         (($action eq 'insert') ? ("--datafile"    => "etc/initialdata") : ()),
         "--dba"         => $RT::DatabaseUser,
-        "--prompt-for-dba-password" => ''
+        "--prompt-for-dba-password" => '',
     );
+
+    push @args, ("--component" => $name, "--ext-version" => $version)
+      if $RT::VERSION >= 4.2;
+
     print "$^X @args\n";
     (system($^X, @args) == 0) or die "...returned with error: $?\n";
 }

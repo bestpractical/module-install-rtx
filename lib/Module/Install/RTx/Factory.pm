@@ -22,6 +22,8 @@ sub RTxInitDB {
 
     RT::LoadConfig();
 
+    require RT::System;
+
     my $lib_path = File::Basename::dirname($INC{'RT.pm'});
     my @args = ("-Ilib");
     push @args, "-I$RT::LocalPath/lib" if $RT::LocalPath;
@@ -33,10 +35,8 @@ sub RTxInitDB {
         (($action eq 'insert') ? ("--datafile"    => "etc/initialdata") : ()),
         "--dba"         => $RT::DatabaseUser,
         "--prompt-for-dba-password" => '',
+        (RT::System->can('AddUpgradeHistory') ? ("--package" => $name, "--ext-version" => $version) : ()),
     );
-
-    push @args, ("--component" => $name, "--ext-version" => $version)
-      if $RT::VERSION >= 4.2;
 
     print "$^X @args\n";
     (system($^X, @args) == 0) or die "...returned with error: $?\n";

@@ -133,9 +133,6 @@ install ::
         $has_etc{schema}++;
         $self->load('RTxFactory');
         $self->postamble(<< ".");
-factory ::
-\t\$(NOECHO) \$(PERL) -Ilib -I"$local_lib_path" -I"$lib_path" -Minc::Module::Install -e"RTxFactory(qw($RTx $name))"
-
 dropdb ::
 \t\$(NOECHO) \$(PERL) -Ilib -I"$local_lib_path" -I"$lib_path" -Minc::Module::Install -e"RTxFactory(qw($RTx $name drop))"
 

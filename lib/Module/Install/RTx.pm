@@ -128,15 +128,7 @@ install ::
 
     my %has_etc;
     if ( File::Glob::bsd_glob("$FindBin::Bin/etc/schema.*") ) {
-
-        # got schema, load factory module
         $has_etc{schema}++;
-        $self->load('RTxFactory');
-        $self->postamble(<< ".");
-dropdb ::
-\t\$(NOECHO) \$(PERL) -Ilib -I"$local_lib_path" -I"$lib_path" -Minc::Module::Install -e"RTxFactory(qw($RTx $name drop))"
-
-.
     }
     if ( File::Glob::bsd_glob("$FindBin::Bin/etc/acl.*") ) {
         $has_etc{acl}++;

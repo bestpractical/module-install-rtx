@@ -1,3 +1,6 @@
+[Changes for 0.29_02 2012-08-16]
+* further removal of make factory, this time 'make dropdb'
+
 [Changes for 0.29_01 2012-08-16]
 * Remove support for 'make factory'
 * Add support for a new 4.1 feature that records database changes made by the extension

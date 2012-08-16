@@ -1,3 +1,7 @@
+[Changes for 0.29_01 2012-08-16]
+* Remove support for 'make factory'
+* Add support for a new 4.1 feature that records database changes made by the extension
+
 [Changes for 0.29 2011-05-20]
 * add requires_rt to handle requiring an RT version
   since MakeMaker and Module::Install::AutoInstall can't deal

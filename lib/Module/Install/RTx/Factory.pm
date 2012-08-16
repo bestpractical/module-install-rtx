@@ -5,7 +5,7 @@ use strict;
 use File::Basename ();
 
 sub RTxInitDB {
-    my ($self, $action) = @_;
+    my ($self, $action, $name, $version) = @_;
 
     unshift @INC, substr(delete($INC{'RT.pm'}), 0, -5) if $INC{'RT.pm'};
 
@@ -22,6 +22,8 @@ sub RTxInitDB {
 
     RT::LoadConfig();
 
+    require RT::System;
+
     my $lib_path = File::Basename::dirname($INC{'RT.pm'});
     my @args = ("-Ilib");
     push @args, "-I$RT::LocalPath/lib" if $RT::LocalPath;
@@ -32,8 +34,10 @@ sub RTxInitDB {
         "--datadir"     => "etc",
         (($action eq 'insert') ? ("--datafile"    => "etc/initialdata") : ()),
         "--dba"         => $RT::DatabaseUser,
-        "--prompt-for-dba-password" => ''
+        "--prompt-for-dba-password" => '',
+        (RT::System->can('AddUpgradeHistory') ? ("--package" => $name, "--ext-version" => $version) : ()),
     );
+
     print "$^X @args\n";
     (system($^X, @args) == 0) or die "...returned with error: $?\n";
 }

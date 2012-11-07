@@ -1,3 +1,7 @@
+[Changes for 0.30 2012-11-06]
+* remove a lot of old unused code
+* add support for a 4.1 feature that records database changes made by the extension
+
 [Changes for 0.29_02 2012-08-16]
 * further removal of make factory, this time 'make dropdb'
 

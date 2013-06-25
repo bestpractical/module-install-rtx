@@ -37,6 +37,10 @@ sub RTxInitDB {
         "--prompt-for-dba-password" => '',
         (RT::System->can('AddUpgradeHistory') ? ("--package" => $name, "--ext-version" => $version) : ()),
     );
+    if ($action eq 'upgrade' and
+        not RT::System->can('AddUpgradeHistory')) {
+        push @args, "--package" => $name;
+    }
 
     print "$^X @args\n";
     (system($^X, @args) == 0) or die "...returned with error: $?\n";

@@ -1,3 +1,8 @@
+[Changes for 0.32 2013-09-06]
+* new make upgrade-database command
+** this feature needs RT 4.2 or 4.0.14+ for maximum benefit
+** used in the RTIR 3.0 release series
+
 [Changes for 0.31 2013-04-08]
 * Changes targetting newer releases of RT
 ** Use the DatabaseAdmin configuration is supplied

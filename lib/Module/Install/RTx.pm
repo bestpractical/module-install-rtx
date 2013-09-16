@@ -179,6 +179,7 @@ sub requires_rt {
     # if we're exactly the same version as what we want, silently return
     return if ($version eq $RT::VERSION);
 
+    require RT::Handle;
     my @sorted = sort RT::Handle::cmp_version $version,$RT::VERSION;
 
     if ($sorted[-1] eq $version) {

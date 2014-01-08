@@ -224,7 +224,7 @@ to warn if your RT version is too old during install
 
 =head1 DESCRIPTION
 
-This B<Module::Install> extension implements one function, C<RTx>,
+This B<Module::Install> extension implements a function, C<RTx>,
 that takes the extension name as the only argument.
 
 It arranges for certain subdirectories to install into the installed
@@ -258,6 +258,23 @@ C<Makefile.PL>, like this:
 
     perl Makefile.PL WITH_SUBDIRS=sbin
 
+This module also provides the following helper functions
+
+=head2 requires_rt
+
+Takes one argument, a valid RT version. If an attempt is made to install
+on an older RT, it will warn about this during the Makefile creation.
+
+=head2 rt_too_new
+
+Takes an RT version and prevents this module from being installed on any
+version of RT equal to or newer than that.  Useful if a particular release of an
+extension only works on 4.0.x but not 4.2.x.
+
+Takes an optional second argument which allows you to specify a custom
+error message. This message is passed to sprintf with two string
+arguments, the current RT version and the version you specify.
+
 =head1 CAVEATS
 
 =over 4
@@ -267,7 +284,7 @@ implemented in this installer to support RTx('Foo') for 'RTx-Foo' extension, but
 life proved that it's bad idea. Code still there for backwards compatibility.
 It will be deleted eventually.
 
-=item * installer want work with RT 3.8.0, as it has some bugs new plugins
+=item * installer won't work with RT 3.8.0, as it has some bugs new plugins
 sub-system.
 
 =item * layout of files has been changed between RT 3.6 and RT 3.8, old files
@@ -294,11 +311,14 @@ L<http://www.bestpractical.com/rt/>
 
 =head1 AUTHORS
 
-Audrey Tang <cpan@audreyt.org>
+Best Practical Solutions
+
+(Originally) Audrey Tang <cpan@audreyt.org>
 
 =head1 COPYRIGHT
 
 Copyright 2003, 2004, 2007 by Audrey Tang E<lt>cpan@audreyt.orgE<gt>.
+Copyright 2008-2014 Best Practical Solutions
 
 This software is released under the MIT license cited below.
 

@@ -188,6 +188,18 @@ sub requires_rt {
     }
 }
 
+sub rt_too_new {
+    my ($self,$version,$msg) = @_;
+    $msg ||= "Your version %s is too new, this extension requires a release of RT older than %s";
+
+    require RT::Handle;
+    my @sorted = sort RT::Handle::cmp_version $version,$RT::VERSION;
+
+    if ($sorted[0] eq $version) {
+        die sprintf($msg,$RT::VERSION,$version);
+    }
+}
+
 1;
 
 __END__

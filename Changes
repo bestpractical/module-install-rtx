@@ -1,3 +1,11 @@
+0.32_01 2014-01-10
+ - Now that we aren't packaging extensions against 3.6, we can use
+   cmp_versions imported from RT core rather than copy/paste.
+ - new rt_too_new which allows you to bail out before being installed
+   on a version of RT which is too new for you to function normally on
+   (corollary to requires_rt).
+ - requires_rt now dies if your RT is too old rather than just warning.
+
 [Changes for 0.32 2013-09-06]
 * new make upgrade-database command
 ** this feature needs RT 4.2 or 4.0.14+ for maximum benefit

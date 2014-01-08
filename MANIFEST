@@ -3,6 +3,7 @@ inc/Module/Install.pm
 inc/Module/Install/Base.pm
 inc/Module/Install/Makefile.pm
 inc/Module/Install/Metadata.pm
+inc/Module/Install/ReadmeFromPod.pm
 inc/Module/Install/WriteAll.pm
 lib/Module/Install/RTx.pm
 lib/Module/Install/RTx/Factory.pm

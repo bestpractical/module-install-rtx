@@ -184,7 +184,7 @@ sub requires_rt {
 
     if ($sorted[-1] eq $version) {
         # should we die?
-        warn "\nWarning: prerequisite RT $version not found. Your installed version of RT ($RT::VERSION) is too old.\n\n";
+        die "\nWarning: prerequisite RT $version not found. Your installed version of RT ($RT::VERSION) is too old.\n\n";
     }
 }
 
@@ -220,7 +220,7 @@ optionally add a
 
     requires_rt('3.8.9');
 
-to warn if your RT version is too old during install
+to die if your RT version is too old during install
 
 =head1 DESCRIPTION
 
@@ -263,7 +263,7 @@ This module also provides the following helper functions
 =head2 requires_rt
 
 Takes one argument, a valid RT version. If an attempt is made to install
-on an older RT, it will warn about this during the Makefile creation.
+on an older RT, it will die before Makefile creation.
 
 =head2 rt_too_new
 

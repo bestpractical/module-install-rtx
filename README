@@ -12,7 +12,7 @@ SYNOPSIS
 
         requires_rt('3.8.9');
 
-    to warn if your RT version is too old during install
+    to die if your RT version is too old during install
 
 DESCRIPTION
     This Module::Install extension implements a function, "RTx", that takes
@@ -54,7 +54,7 @@ DESCRIPTION
 
   requires_rt
     Takes one argument, a valid RT version. If an attempt is made to install
-    on an older RT, it will warn about this during the Makefile creation.
+    on an older RT, it will die before Makefile creation.
 
   rt_too_new
     Takes an RT version and prevents this module from being installed on any

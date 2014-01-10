@@ -179,7 +179,7 @@ sub requires_rt {
     # if we're exactly the same version as what we want, silently return
     return if ($version eq $RT::VERSION);
 
-    require RT::Handle;
+    _load_rt_handle();
     my @sorted = sort RT::Handle::cmp_version $version,$RT::VERSION;
 
     if ($sorted[-1] eq $version) {
@@ -192,12 +192,27 @@ sub rt_too_new {
     my ($self,$version,$msg) = @_;
     $msg ||= "Your version %s is too new, this extension requires a release of RT older than %s";
 
-    require RT::Handle;
+    _load_rt_handle();
     my @sorted = sort RT::Handle::cmp_version $version,$RT::VERSION;
 
     if ($sorted[0] eq $version) {
         die sprintf($msg,$RT::VERSION,$version);
     }
+}
+
+# RT::Handle runs FinalizeDatabaseType which calls RT->Config->Get
+# On 3.8, this dies.  On 4.0/4.2 ->Config transparently runs LoadConfig.
+# LoadConfig requires being able to read RT_SiteConfig.pm (root) so we'd
+# like to avoid pushing that on users.
+# Fake up just enough Config to let FinalizeDatabaseType finish, and
+# anyone later calling LoadConfig will overwrite our shenanigans.
+sub _load_rt_handle {
+    unless ($RT::Config) {
+        require RT::Config;
+        $RT::Config = RT::Config->new;
+        RT->Config->Set('DatabaseType','mysql');
+    }
+    require RT::Handle;
 }
 
 1;

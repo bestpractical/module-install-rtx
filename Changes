@@ -1,3 +1,7 @@
+0.32_02 2014-02-10
+ - Avoid some false positives that would offer a make upgrade-database
+   which cannot work.
+
 0.32_01 2014-01-10
  - Now that we aren't packaging extensions against 3.6, we can use
    cmp_versions imported from RT core rather than copy/paste.

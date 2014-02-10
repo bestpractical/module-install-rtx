@@ -135,7 +135,9 @@ install ::
         $has_etc{acl}++;
     }
     if ( -e 'etc/initialdata' ) { $has_etc{initialdata}++; }
-    if ( -d 'etc/upgrade/' )    { $has_etc{upgrade}++; }
+    if ( grep { /\d+\.\d+\.\d+.*$/ } glob('etc/upgrade/*.*.*') ) {
+        $has_etc{upgrade}++;
+    }
 
     $self->postamble("$postamble\n");
     unless ( $subdirs{'lib'} ) {

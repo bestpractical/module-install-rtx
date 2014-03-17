@@ -14,50 +14,50 @@
    (corollary to requires_rt).
  - requires_rt now dies if your RT is too old rather than just warning.
 
-[Changes for 0.32 2013-09-06]
+0.32 2013-09-06
 * new make upgrade-database command
 ** this feature needs RT 4.2 or 4.0.14+ for maximum benefit
 ** used in the RTIR 3.0 release series
 
-[Changes for 0.31 2013-04-08]
+0.31 2013-04-08
 * Changes targetting newer releases of RT
 ** Use the DatabaseAdmin configuration is supplied
 ** Install /static/ on future 4.2 versions of RT
 
-[Changes for 0.30 2012-11-06]
+0.30 2012-11-06
 * remove a lot of old unused code
 * add support for a 4.1 feature that records database changes made by the extension
 
-[Changes for 0.29_02 2012-08-16]
+0.29_02 2012-08-16
 * further removal of make factory, this time 'make dropdb'
 
-[Changes for 0.29_01 2012-08-16]
+0.29_01 2012-08-16
 * Remove support for 'make factory'
 * Add support for a new 4.1 feature that records database changes made by the extension
 
-[Changes for 0.29 2011-05-20]
+0.29 2011-05-20
 * add requires_rt to handle requiring an RT version
   since MakeMaker and Module::Install::AutoInstall can't deal
   with RT version numbers.
 
-[Changes for 0.28 2011-03-15]
+0.28 2011-03-15
 * search /opt/rt4 for RT.pm
 
-[Changes for 0.27 2010-12-16]
+0.27 2010-12-16
 * Include RT's lib/ directory in INC so that requires() 
   on RT::VERSION work properly
 
-[Changes for 0.26 2010-12-14]
+0.26 2010-12-14
 
 * Search RTHOME before searching @INC
   This works around distribution packages lurking in @INC
 
-[Changes for 0.25 2009-10-08]
+0.25 2009-10-08
 
-* Make prompt for lib path clearer [rt.cpan.org #50328]
+* Make prompt for lib path clearer [rt.cpan.org #50328
 * trim RT.pm from lib paths entered by users
 
-[Changes for 0.24 2008-09-15]
+0.24 2008-09-15
 
 * updated docs
 * die when target is RT 3.8.0
@@ -65,18 +65,18 @@
   on RT 3.8.x
 * delete VERSION from POD, we just always forget to update it
 
-[Changes for 0.23 2008-05-09]
+0.23 2008-05-09
 
 * RT now respects the --datafile flag to rt-setup-database when
   used with --action acl or --action schema.
   Don't pass the initialdata file when we're doing schema changes
 
-[Changes for 0.22 2008-03-25]
+0.22 2008-03-25
 
 * Add local lib path to the @INC when we call any script that may
   load RT config.
 
-[Changes for 0.21 2007-12-07]
+0.21 2007-12-07
 
 * LICENSING CHANGE: This compilation and all individual files in it
   are now under the permissive "MIT" license.  See the COPYRIGHT
@@ -87,31 +87,31 @@
 * Bump dependency of Module::Install::Admin to 0.40, so we can make use of
   all_from() and drop the parentheses in Makefile.PL commands.
 
-[ Changes for 0.20 2007-12-05]
+0.20 2007-12-05
 
 * Support for new RT 3.7 "RT Plugin" mechanism.
 
 * No longer tries to write to the global local perl man and site directories
   (packlists and manpages), instead installing them within the RT hierarchy.
 
-[Changes for 0.11 - 2005-02-26]
+0.11 - 2005-02-26
 
 * make initdb now prompts for dba password.
 
-[Changes for 0.10 - 2004-09-09]
+0.10 - 2004-09-09
 
 * "make initialize-database" added as an alias to "make initdb",
   for better consistency with core RT installation.
 
   Reported by: Sika.
 
-[Changes for 0.09 - 2004-09-09]
+0.09 - 2004-09-09
 
 * Moved under SVK management; remove all keyword expansion lines.
 
 * Corrected the use of $ENV{RTHOME} and documented it.
 
-[Changes for 0.08 - 2004-05-31]
+0.08 - 2004-05-31
 
 * "make initdb" now moved to M::I::RTx::Factory, so the person
   running "perl Makefile.PL" needs not have permission to read
@@ -125,17 +125,17 @@
 
 * Better handling failed require() on _Overlay classes in the factory.
 
-[Changes for 0.07 - 2004-05-13]
+0.07 - 2004-05-13
 
 * Need to use RT::LoadConfig instead of requiring the config files directly.
   Reported by: Jesse Vincent
 
-[Changes for 0.06 - 2004-05-10]
+0.06 - 2004-05-10
 
 * Support "make factory", "make initdb", "make dropdb"
   for extensions that has its own initialdata and schema.
 
-[Changes for 0.05 - 2004-02-01]
+0.05 - 2004-02-01
 
 * Now installs libs to $RT::LocalPath/lib instead of perl's sitelib.
 
@@ -143,7 +143,7 @@
 
 * Allow overriding prefix with $ENV{PREFIX}
 
-[Changes for 0.04 - 2004-01-10]
+0.04 - 2004-01-10
 
 * Update copyright years.
 
@@ -159,6 +159,6 @@
 
 * Some POD cleanups.
 
-[Changes for 0.01 - 2003-12-15]
+0.01 - 2003-12-15
 
 * Initial release.

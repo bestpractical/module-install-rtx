@@ -7,7 +7,7 @@ no warnings 'once';
 
 use Module::Install::Base;
 use base 'Module::Install::Base';
-our $VERSION = '0.32_02';
+our $VERSION = '0.33';
 
 use FindBin;
 use File::Glob     ();
@@ -197,7 +197,7 @@ sub requires_rt {
 
 sub rt_too_new {
     my ($self,$version,$msg) = @_;
-    $msg ||= "Your version %s is too new, this extension requires a release of RT older than %s";
+    $msg ||= "Your version %s is too new, this extension requires a release of RT older than %s\n";
 
     _load_rt_handle();
     my @sorted = sort RT::Handle::cmp_version $version,$RT::VERSION;

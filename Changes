@@ -1,3 +1,8 @@
+0.34 2014-05-20
+ - Backcompat workaround so you can ship static/css and static/js and
+   on 4.0 we copy to html/NoAuth/{css,js}.  Isn't a full win for images
+   which needed a dhandler hack under 4.0.
+
 0.33 2014-03-17
  - Better error message when requires_rt dies
  - Release a pent up set of changes now that they've been tested

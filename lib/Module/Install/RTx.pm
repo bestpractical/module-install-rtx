@@ -195,6 +195,19 @@ sub requires_rt {
     }
 }
 
+sub requires_rt_plugin {
+    my $self = shift;
+    my ( $plugin ) = @_;
+    $plugin =~ s{\:\:}{-}g;
+    my $path_to_pluginlib = $RT::LocalPluginPath
+        || $RT::LocalPath . '/plugins';
+       $path_to_pluginlib .= '/' . $plugin . '/lib';
+    if ( -e $path_to_pluginlib ) {
+        unshift @INC, $path_to_pluginlib;
+    }
+    $self->requires(@_);
+}
+
 sub rt_too_new {
     my ($self,$version,$msg) = @_;
     $msg ||= "Your version %s is too new, this extension requires a release of RT older than %s\n";
@@ -286,6 +299,11 @@ This module also provides the following helper functions
 
 Takes one argument, a valid RT version. If an attempt is made to install
 on an older RT, it will die before Makefile creation.
+
+=head2 requires_rt_plugin
+
+Takes same args as C<requires> and then fallbacks to that after mangling
+C<@INC> to include local plugin dirs.
 
 =head2 rt_too_new
 

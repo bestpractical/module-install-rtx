@@ -164,6 +164,8 @@ install ::
             $self->postamble("upgradedb ::\n$upgradedb\n");
         }
     }
+
+    $self->requires_rt('4.0.0');
 }
 
 sub requires_rt {

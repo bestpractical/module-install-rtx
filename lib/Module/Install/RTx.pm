@@ -63,12 +63,6 @@ sub RTx {
     unshift @INC, "$RT::LocalPath/lib" if $RT::LocalPath;
     unshift @INC, $lib_path;
 
-    $RT::LocalVarPath    ||= $RT::VarPath;
-    $RT::LocalPoPath     ||= $RT::LocalLexiconPath;
-    $RT::LocalHtmlPath   ||= $RT::MasonComponentRoot;
-    $RT::LocalStaticPath ||= $RT::StaticPath;
-    $RT::LocalLibPath    ||= "$RT::LocalPath/lib";
-
     my $with_subdirs = $ENV{WITH_SUBDIRS};
     @ARGV = grep { /WITH_SUBDIRS=(.*)/ ? ( ( $with_subdirs = $1 ), 0 ) : 1 }
         @ARGV;

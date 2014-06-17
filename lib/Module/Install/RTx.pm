@@ -43,7 +43,7 @@ sub RTx {
         local @INC = (
             $ENV{RTHOME} ? ( $ENV{RTHOME}, "$ENV{RTHOME}/lib" ) : (),
             @INC,
-            map { ( "$_/rt4/lib", "$_/lib/rt4", "$_/rt3/lib", "$_/lib/rt3", "$_/lib" )
+            map { ( "$_/rt4/lib", "$_/lib/rt4", "$_/lib" )
                 } grep $_, @prefixes
         );
         until ( eval { require RT; $RT::LocalPath } ) {
@@ -51,7 +51,7 @@ sub RTx {
                 "Cannot find the location of RT.pm that defines \$RT::LocalPath in: @INC\n";
             $_ = $self->prompt("Path to directory containing your RT.pm:") or exit;
             $_ =~ s/\/RT\.pm$//;
-            push @INC, $_, "$_/rt3/lib", "$_/lib/rt3", "$_/lib";
+            push @INC, $_, "$_/rt4/lib", "$_/lib/rt4", "$_/lib";
         }
     }
 
@@ -78,29 +78,15 @@ sub RTx {
         $subdirs{$_} = 1 foreach grep -d "$FindBin::Bin/$_", @DIRS;
     }
 
-    # If we're running on RT 3.8 with plugin support, we really wany
-    # to install libs, mason templates and po files into plugin specific
-    # directories
+    # Installation locations
     my %path;
-    if ( $RT::LocalPluginPath ) {
-        die "Because of bugs in RT 3.8.0 this extension can not be installed.\n"
-            ."Upgrade to RT 3.8.1 or newer.\n" if $RT::VERSION =~ /^3\.8\.0/;
-        $path{$_} = $RT::LocalPluginPath . "/$original_name/$_"
-            foreach @DIRS;
+    $path{$_} = $RT::LocalPluginPath . "/$name/$_"
+        foreach @DIRS;
 
-        # Copy RT 4.2.0 static files into NoAuth; insufficient for
-        # images, but good enough for css and js.
-        $path{static} = "$path{html}/NoAuth/"
-            unless $RT::StaticPath;
-    } else {
-        foreach ( @DIRS ) {
-            no strict 'refs';
-            my $varname = "RT::Local" . ucfirst($_) . "Path";
-            $path{$_} = ${$varname} || "$RT::LocalPath/$_";
-        }
-
-        $path{$_} .= "/$name" for grep $path{$_}, qw(etc po var);
-    }
+    # Copy RT 4.2.0 static files into NoAuth; insufficient for
+    # images, but good enough for css and js.
+    $path{static} = "$path{html}/NoAuth/"
+        unless $RT::StaticPath;
 
     my %index = map { $_ => 1 } @INDEX_DIRS;
     $self->no_index( directory => $_ ) foreach grep !$index{$_}, @DIRS;
@@ -331,13 +317,6 @@ arguments, the current RT version and the version you specify.
 implemented in this installer to support RTx('Foo') for 'RTx-Foo' extension, but
 life proved that it's bad idea. Code still there for backwards compatibility.
 It will be deleted eventually.
-
-=item * installer won't work with RT 3.8.0, as it has some bugs new plugins
-sub-system.
-
-=item * layout of files has been changed between RT 3.6 and RT 3.8, old files
-may influence behaviour of your extension. Recommend people use clean dir on
-upgrade or guide how to remove old versions of your extension.
 
 =back
 

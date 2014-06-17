@@ -57,22 +57,15 @@ sub RTx {
         }
     }
 
-    my $lib_path = File::Basename::dirname( $INC{'RT.pm'} );
-    my $local_lib_path = "$RT::LocalPath/lib";
     print "Using RT configuration from $INC{'RT.pm'}:\n";
-    unshift @INC, "$RT::LocalPath/lib" if $RT::LocalPath;
+
+    my $local_lib_path = $RT::LocalLibPath;
+    unshift @INC, $local_lib_path;
+    my $lib_path = File::Basename::dirname( $INC{'RT.pm'} );
     unshift @INC, $lib_path;
 
-    my $with_subdirs = $ENV{WITH_SUBDIRS};
-    @ARGV = grep { /WITH_SUBDIRS=(.*)/ ? ( ( $with_subdirs = $1 ), 0 ) : 1 }
-        @ARGV;
-
     my %subdirs;
-    %subdirs = map { $_ => 1 } split( /\s*,\s*/, $with_subdirs )
-        if defined $with_subdirs;
-    unless ( keys %subdirs ) {
-        $subdirs{$_} = 1 foreach grep -d "$FindBin::Bin/$_", @DIRS;
-    }
+    $subdirs{$_} = 1 foreach grep -d "$FindBin::Bin/$_", @DIRS;
 
     # Installation locations
     my %path;
@@ -265,15 +258,6 @@ they exist (assuming C<RTx('RT-Extension-Example')>):
     ./sbin   => $RT::LocalPluginPath/RT-Extension-Example/sbin
     ./static => $RT::LocalPluginPath/RT-Extension-Example/static
     ./var    => $RT::LocalPluginPath/RT-Extension-Example/var
-
-By default, all these subdirectories will be installed with C<make install>.
-you can override this by setting the C<WITH_SUBDIRS> environment variable to
-a comma-delimited subdirectory list, such as C<html,sbin>.
-
-Alternatively, you can also specify the list as a command-line option to
-C<Makefile.PL>, like this:
-
-    perl Makefile.PL WITH_SUBDIRS=sbin
 
 =head2 requires_rt I<version>
 

@@ -56,9 +56,6 @@ sub RTx {
     my $lib_path = File::Basename::dirname( $INC{'RT.pm'} );
     unshift @INC, $lib_path;
 
-    my %subdirs;
-    $subdirs{$_} = 1 foreach grep -d "$FindBin::Bin/$_", @DIRS;
-
     # Installation locations
     my %path;
     $path{$_} = $RT::LocalPluginPath . "/$name/$_"
@@ -69,15 +66,18 @@ sub RTx {
     $path{static} = "$path{html}/NoAuth/"
         unless $RT::StaticPath;
 
+    # Delete the ones we don't need
+    delete $path{$_} for grep {not -d "$FindBin::Bin/$_"} keys %path;
+
     my %index = map { $_ => 1 } @INDEX_DIRS;
     $self->no_index( directory => $_ ) foreach grep !$index{$_}, @DIRS;
 
     my $args = join ', ', map "q($_)", map { ($_, $path{$_}) }
-        grep $subdirs{$_}, keys %path;
+        sort keys %path;
 
-    print "./$_\t=> $path{$_}\n" for sort keys %subdirs;
+    printf "%-10s => %s\n", $_, $path{$_} for sort keys %path;
 
-    if ( my @dirs = map { ( -D => $_ ) } grep $subdirs{$_}, qw(bin html sbin) ) {
+    if ( my @dirs = map { ( -D => $_ ) } grep $path{$_}, qw(bin html sbin) ) {
         my @po = map { ( -o => $_ ) }
             grep -f,
             File::Glob::bsd_glob("po/*.po");
@@ -92,7 +92,7 @@ install ::
 \t\$(NOECHO) \$(PERL) -MExtUtils::Install -e \"install({$args})\"
 .
 
-    if ( $subdirs{var} and -d $RT::MasonDataDir ) {
+    if ( $path{var} and -d $RT::MasonDataDir ) {
         my ( $uid, $gid ) = ( stat($RT::MasonDataDir) )[ 4, 5 ];
         $postamble .= << ".";
 \t\$(NOECHO) chown -R $uid:$gid $path{var}
@@ -112,11 +112,11 @@ install ::
     }
 
     $self->postamble("$postamble\n");
-    unless ( $subdirs{'lib'} ) {
-        $self->makemaker_args( PM => { "" => "" }, );
-    } else {
+    if ( $path{lib} ) {
         $self->makemaker_args( INSTALLSITELIB => $path{'lib'} );
         $self->makemaker_args( INSTALLARCHLIB => $path{'lib'} );
+    } else {
+        $self->makemaker_args( PM => { "" => "" }, );
     }
 
     $self->makemaker_args( INSTALLSITEMAN1DIR => "$RT::LocalPath/man/man1" );

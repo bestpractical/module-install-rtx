@@ -150,6 +150,8 @@ install ::
 sub requires_rt {
     my ($self,$version) = @_;
 
+    $self->add_metadata("x_requires_rt", $version) if $self->is_admin;
+
     # if we're exactly the same version as what we want, silently return
     return if ($version eq $RT::VERSION);
 
@@ -165,6 +167,12 @@ sub requires_rt {
 sub requires_rt_plugin {
     my $self = shift;
     my ( $plugin ) = @_;
+
+    if ($self->is_admin) {
+        my $plugins = $self->{values}{"x_requires_rt_plugins"} || [];
+        push @{$plugins}, $plugin;
+        $self->add_metadata("x_requires_rt_plugins", $plugins);
+    }
 
     my $path = $plugin;
     $path =~ s{\:\:}{-}g;
@@ -186,6 +194,8 @@ EOT
 sub rt_too_new {
     my ($self,$version,$msg) = @_;
     $msg ||= "Your version %s is too new, this extension requires a release of RT older than %s\n";
+
+    $self->add_metadata("x_rt_too_new", $version) if $self->is_admin;
 
     _load_rt_handle();
     my @sorted = sort RT::Handle::cmp_version $version,$RT::VERSION;

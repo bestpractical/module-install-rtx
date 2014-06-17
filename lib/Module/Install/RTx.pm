@@ -32,7 +32,7 @@ sub RTx {
     $self->abstract("RT $name Extension")
         unless $self->abstract;
 
-    my @prefixes = (qw(/opt /usr/local /home /usr /sw ));
+    # Try to find RT.pm -- if they give a PREFIX, just use that
     my $prefix   = $ENV{PREFIX};
     @ARGV = grep { /PREFIX=(.*)/ ? ( ( $prefix = $1 ), 0 ) : 1 } @ARGV;
 
@@ -40,18 +40,20 @@ sub RTx {
         $RT::LocalPath = $prefix;
         $INC{'RT.pm'} = "$RT::LocalPath/lib/RT.pm";
     } else {
-        local @INC = (
-            $ENV{RTHOME} ? ( $ENV{RTHOME}, "$ENV{RTHOME}/lib" ) : (),
-            @INC,
-            map { ( "$_/rt4/lib", "$_/lib/rt4", "$_/lib" )
-                } grep $_, @prefixes
-        );
-        until ( eval { require RT; $RT::LocalPath } ) {
+        my @prefixes = qw( /opt /usr/local /home /usr /sw );
+        my @try = $ENV{RTHOME} ? ($ENV{RTHOME}, "$ENV{RTHOME}/lib") : ();
+        while (1) {
+            my @look = @INC;
+            unshift @look, grep {defined and -d $_} @try;
+            push @look, grep {defined and -d $_}
+                map { ( "$_/rt4/lib", "$_/lib/rt4", "$_/lib" ) } @prefixes;
+            last if eval {local @INC = @look; require RT; $RT::LocalLibPath};
+
             warn
-                "Cannot find the location of RT.pm that defines \$RT::LocalPath in: @INC\n";
+                "Cannot find the location of RT.pm that defines \$RT::LocalPath in: @look\n";
             $_ = $self->prompt("Path to directory containing your RT.pm:") or exit;
             $_ =~ s{(/lib)?/RT\.pm$}{};
-            push @INC, $_, "$_/rt4/lib", "$_/lib/rt4", "$_/lib";
+            @try = ("$_/rt4/lib", "$_/lib/rt4", "$_/lib");
         }
     }
 

@@ -241,44 +241,34 @@ Module::Install::RTx - RT extension installer
 
 =head1 SYNOPSIS
 
-In the F<Makefile.PL> of the C<RT-Extension-Foo> module:
+In the F<Makefile.PL> of the C<RT-Extension-Example> module:
 
     use inc::Module::Install;
-    RTx 'RT-Extension-Foo';
+    RTx 'RT-Extension-Example';
+
+    requires_rt '4.2.0';
+    rt_too_new  '4.4.0';
+
     WriteAll();
-
-optionally add a
-
-    requires_rt('3.8.9');
-
-to die if your RT version is too old during install
 
 =head1 DESCRIPTION
 
-This B<Module::Install> extension implements a function, C<RTx>,
-that takes the extension name as the only argument.
+This B<Module::Install> extension implements several functions for
+installing RT extensions:
 
-It arranges for certain subdirectories to install into the installed
-RT location, but does not affect the usual C<lib> and C<t> directories.
+=head2 RTx 'I<extension name>'
 
-The directory mapping table is as below:
+This function arranges for the following directories to be installed, if
+they exist (assuming C<RTx('RT-Extension-Example')>):
 
-    ./bin   => $RT::LocalPath/bin
-    ./etc   => $RT::LocalPath/etc/$NAME
-    ./html  => $RT::MasonComponentRoot
-    ./po    => $RT::LocalLexiconPath/$NAME
-    ./sbin  => $RT::LocalPath/sbin
-    ./var   => $RT::VarPath/$NAME
-
-Under the default RT3 layout in F</opt> and with the extension name
-C<Foo>, it becomes:
-
-    ./bin   => /opt/rt3/local/bin
-    ./etc   => /opt/rt3/local/etc/Foo
-    ./html  => /opt/rt3/share/html
-    ./po    => /opt/rt3/local/po/Foo
-    ./sbin  => /opt/rt3/local/sbin
-    ./var   => /opt/rt3/var/Foo
+    ./bin    => $RT::LocalPluginPath/RT-Extension-Example/bin
+    ./etc    => $RT::LocalPluginPath/RT-Extension-Example/etc
+    ./html   => $RT::LocalPluginPath/RT-Extension-Example/html
+    ./lib    => $RT::LocalPluginPath/RT-Extension-Example/lib
+    ./po     => $RT::LocalPluginPath/RT-Extension-Example/po
+    ./sbin   => $RT::LocalPluginPath/RT-Extension-Example/sbin
+    ./static => $RT::LocalPluginPath/RT-Extension-Example/static
+    ./var    => $RT::LocalPluginPath/RT-Extension-Example/var
 
 By default, all these subdirectories will be installed with C<make install>.
 you can override this by setting the C<WITH_SUBDIRS> environment variable to
@@ -289,23 +279,23 @@ C<Makefile.PL>, like this:
 
     perl Makefile.PL WITH_SUBDIRS=sbin
 
-This module also provides the following helper functions
-
-=head2 requires_rt
+=head2 requires_rt I<version>
 
 Takes one argument, a valid RT version. If an attempt is made to install
-on an older RT, it will die before Makefile creation.
+on an RT than that version, it will die before Makefile creation.
 
-=head2 requires_rt_plugin
+=head2 requires_rt_plugin I<RT::Extension::Example> [, I<version>]
 
-Takes same args as C<requires> and then fallbacks to that after mangling
-C<@INC> to include local plugin dirs.
+Ensures that the given RT extension (and optional version) is installed
+in the target RT instance; C<requires> cannot be used because RT
+extensions are not in @INC.
 
-=head2 rt_too_new
+=head2 rt_too_new I<version> [, I<message>]
 
-Takes an RT version and prevents this module from being installed on any
-version of RT equal to or newer than that.  Useful if a particular release of an
-extension only works on 4.0.x but not 4.2.x.
+Takes one argument, a valid RT version, and prevents this module from
+being installed on any version of RT equal to or newer than that.
+Useful if a particular release of an extension only works on 4.0.x but
+not 4.2.x.
 
 Takes an optional second argument which allows you to specify a custom
 error message. This message is passed to sprintf with two string

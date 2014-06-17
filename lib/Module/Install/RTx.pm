@@ -150,12 +150,21 @@ install ::
 sub requires_rt {
     my ($self,$version) = @_;
 
-    $self->add_metadata("x_requires_rt", $version) if $self->is_admin;
+    _load_rt_handle();
+
+    if ($self->is_admin) {
+        $self->add_metadata("x_requires_rt", $version);
+        my @sorted = sort RT::Handle::cmp_version $version,'4.0.0';
+        $self->perl_version('5.008003') if $sorted[0] eq '4.0.0'
+            and (not $self->perl_version or '5.008003' > $self->perl_version);
+        @sorted = sort RT::Handle::cmp_version $version,'4.2.0';
+        $self->perl_version('5.010001') if $sorted[0] eq '4.2.0'
+            and (not $self->perl_version or '5.010001' > $self->perl_version);
+    }
 
     # if we're exactly the same version as what we want, silently return
     return if ($version eq $RT::VERSION);
 
-    _load_rt_handle();
     my @sorted = sort RT::Handle::cmp_version $version,$RT::VERSION;
 
     if ($sorted[-1] eq $version) {

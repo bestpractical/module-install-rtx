@@ -19,17 +19,15 @@ my @INDEX_DIRS = qw(lib bin sbin);
 sub RTx {
     my ( $self, $name ) = @_;
 
-    my $original_name = $name;
-    my $RTx = 'RTx';
-    $RTx = $1 if $name =~ s/^(\w+)-//;
+    # Set up names
     my $fname = $name;
     $fname =~ s!-!/!g;
 
-    $self->name("$RTx-$name")
+    $self->name( $name )
         unless $self->name;
-    $self->all_from( -e "$name.pm" ? "$name.pm" : "lib/$RTx/$fname.pm" )
+    $self->all_from( "lib/$fname.pm" )
         unless $self->version;
-    $self->abstract("RT $name Extension")
+    $self->abstract("$name Extension")
         unless $self->abstract;
 
     # Try to find RT.pm
@@ -277,10 +275,10 @@ arguments, the current RT version and the version you specify.
 
 =over 4
 
-=item * Use full name when call RTx method in Makefile.PL, some magic has been
-implemented in this installer to support RTx('Foo') for 'RTx-Foo' extension, but
-life proved that it's bad idea. Code still there for backwards compatibility.
-It will be deleted eventually.
+=item *
+
+Us the full name when calling RTx method in Makefile.PL; while
+C<RTx('Foo')> was once supported, it is no longer.
 
 =back
 

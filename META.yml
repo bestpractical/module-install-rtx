@@ -21,7 +21,7 @@ no_index:
 provides:
   Module::Install::RTx:
     file: lib/Module/Install/RTx.pm
-    version: 0.34
+    version: 0.34_01
   Module::Install::RTx::Runtime:
     file: lib/Module/Install/RTx/Runtime.pm
 requires:
@@ -29,4 +29,4 @@ requires:
   perl: 5.8.0
 resources:
   license: http://opensource.org/licenses/mit-license.php
-version: 0.34
+version: 0.34_01

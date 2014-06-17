@@ -75,7 +75,7 @@ sub RTx {
 
     printf "%-10s => %s\n", $_, $path{$_} for sort keys %path;
 
-    if ( my @dirs = map { ( -D => $_ ) } grep $path{$_}, qw(bin html sbin) ) {
+    if ( my @dirs = map { ( -D => $_ ) } grep $path{$_}, qw(bin html sbin etc) ) {
         my @po = map { ( -o => $_ ) }
             grep -f,
             File::Glob::bsd_glob("po/*.po");

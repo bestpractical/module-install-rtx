@@ -204,6 +204,14 @@ sub requires_rt_plugin {
     $path = "RT::LocalPluginPath/$path/lib";
     if ( -e $path ) {
         unshift @INC, $path;
+    } else {
+        my $name = $self->name;
+        warn <<"EOT";
+
+**** Warning: $name requires that the $plugin plugin be installed and
+              enabled; it does not appear to be installed.
+
+EOT
     }
     $self->requires(@_);
 }

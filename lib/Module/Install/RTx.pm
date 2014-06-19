@@ -174,8 +174,12 @@ sub requires_rt {
     my @sorted = sort RT::Handle::cmp_version $version,$RT::VERSION;
 
     if ($sorted[-1] eq $version) {
-        # should we die?
-        die "\nWarning: prerequisite RT $version not found. Your installed version of RT ($RT::VERSION) is too old.\n\n";
+        die <<"EOT";
+
+**** Error: This extension requires RT $version. Your installed version
+            of RT ($RT::VERSION) is too old.
+
+EOT
     }
 }
 
@@ -208,8 +212,13 @@ EOT
 
 sub rt_too_new {
     my ($self,$version,$msg) = @_;
-    $msg ||= "Your version %s is too new, this extension requires a release of RT older than %s\n";
+    my $name = $self->name;
+    $msg ||= <<EOT;
 
+**** Error: Your installed version of RT (%s) is too new; this extension
+            only works with versions older than %s.
+
+EOT
     $self->add_metadata("x_rt_too_new", $version) if $self->is_admin;
 
     _load_rt_handle();

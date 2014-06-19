@@ -22,6 +22,7 @@ EOT
     }
 
     require RT::System;
+    my $has_upgrade = RT::System->can('AddUpgradeHistory');
 
     my $lib_path = File::Basename::dirname($INC{'RT.pm'});
     my @args = (
@@ -34,13 +35,12 @@ EOT
         (($action eq 'insert') ? ("--datafile"    => "etc/initialdata") : ()),
         "--dba"         => $RT::DatabaseAdmin || $RT::DatabaseUser,
         "--prompt-for-dba-password" => '',
-        (RT::System->can('AddUpgradeHistory') ? ("--package" => $name, "--ext-version" => $version) : ()),
+        ($has_upgrade ? ("--package" => $name, "--ext-version" => $version) : ()),
     );
     # If we're upgrading against an RT which isn't at least 4.2 (has
     # AddUpgradeHistory) then pass --package.  Upgrades against later RT
     # releases will pick up --package from AddUpgradeHistory.
-    if ($action eq 'upgrade' and
-        not RT::System->can('AddUpgradeHistory')) {
+    if ($action eq 'upgrade' and not $has_upgrade) {
         push @args, "--package" => $name;
     }
 

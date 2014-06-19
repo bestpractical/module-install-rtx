@@ -122,23 +122,23 @@ install ::
     $self->makemaker_args( INSTALLSITEARCH => "$RT::LocalPath/man" );
 
     if (%has_etc) {
-        $self->load('RTxInitDB');
+        $self->load('RTxDatabase');
         print "For first-time installation, type 'make initdb'.\n";
         my $initdb = '';
         $initdb .= <<"." if $has_etc{schema};
-\t\$(NOECHO) \$(PERL) -Ilib -I"$local_lib_path" -I"$lib_path" -Minc::Module::Install -e"RTxInitDB(qw(schema \$(NAME) \$(VERSION)))"
+\t\$(NOECHO) \$(PERL) -Ilib -I"$local_lib_path" -I"$lib_path" -Minc::Module::Install -e"RTxDatabase(qw(schema \$(NAME) \$(VERSION)))"
 .
         $initdb .= <<"." if $has_etc{acl};
-\t\$(NOECHO) \$(PERL) -Ilib -I"$local_lib_path" -I"$lib_path" -Minc::Module::Install -e"RTxInitDB(qw(acl \$(NAME) \$(VERSION)))"
+\t\$(NOECHO) \$(PERL) -Ilib -I"$local_lib_path" -I"$lib_path" -Minc::Module::Install -e"RTxDatabase(qw(acl \$(NAME) \$(VERSION)))"
 .
         $initdb .= <<"." if $has_etc{initialdata};
-\t\$(NOECHO) \$(PERL) -Ilib -I"$local_lib_path" -I"$lib_path" -Minc::Module::Install -e"RTxInitDB(qw(insert \$(NAME) \$(VERSION)))"
+\t\$(NOECHO) \$(PERL) -Ilib -I"$local_lib_path" -I"$lib_path" -Minc::Module::Install -e"RTxDatabase(qw(insert \$(NAME) \$(VERSION)))"
 .
         $self->postamble("initdb ::\n$initdb\n");
         $self->postamble("initialize-database ::\n$initdb\n");
         if ($has_etc{upgrade}) {
             print "To upgrade from a previous version of this extension, use 'make upgrade-database'\n";
-            my $upgradedb = qq|\t\$(NOECHO) \$(PERL) -Ilib -I"$local_lib_path" -I"$lib_path" -Minc::Module::Install -e"RTxInitDB(qw(upgrade \$(NAME) \$(VERSION)))"\n|;
+            my $upgradedb = qq|\t\$(NOECHO) \$(PERL) -Ilib -I"$local_lib_path" -I"$lib_path" -Minc::Module::Install -e"RTxDatabase(qw(upgrade \$(NAME) \$(VERSION)))"\n|;
             $self->postamble("upgrade-database ::\n$upgradedb\n");
             $self->postamble("upgradedb ::\n$upgradedb\n");
         }

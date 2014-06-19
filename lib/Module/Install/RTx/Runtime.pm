@@ -1,10 +1,10 @@
-package Module::Install::RTx::Factory;
+package Module::Install::RTx::Runtime;
 use Module::Install::Base; @ISA = qw(Module::Install::Base);
 
 use strict;
 use File::Basename ();
 
-sub RTxInitDB {
+sub RTxDatabase {
     my ($self, $action, $name, $version) = @_;
 
     unshift @INC, substr(delete($INC{'RT.pm'}), 0, -5) if $INC{'RT.pm'};

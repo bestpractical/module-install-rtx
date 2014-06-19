@@ -22,8 +22,8 @@ provides:
   Module::Install::RTx:
     file: lib/Module/Install/RTx.pm
     version: 0.34
-  Module::Install::RTx::Factory:
-    file: lib/Module/Install/RTx/Factory.pm
+  Module::Install::RTx::Runtime:
+    file: lib/Module/Install/RTx/Runtime.pm
 requires:
   Module::Install::Admin: 0.4
   perl: 5.8.0

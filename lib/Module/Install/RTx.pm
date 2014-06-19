@@ -29,6 +29,7 @@ sub RTx {
         unless $self->version;
     $self->abstract("$name Extension")
         unless $self->abstract;
+    $self->add_metadata("x_module_install_rtx_version", $VERSION );
 
     # Try to find RT.pm
     my @prefixes = qw( /opt /usr/local /home /usr /sw );

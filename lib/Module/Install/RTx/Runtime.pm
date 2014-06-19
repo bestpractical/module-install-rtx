@@ -52,4 +52,25 @@ sub RTxDatabase {
     (system($^X, @args) == 0) or die "...returned with error: $?\n";
 }
 
+sub RTxPlugin {
+    my ($self, $name) = @_;
+
+    $self->_rt_runtime_load;
+    require YAML::Tiny;
+    my $data = YAML::Tiny::LoadFile('META.yml');
+    my $name = $data->{name};
+
+    my @enabled = RT->Config->Get('Plugins');
+    for my $required (@{$data->{x_requires_rt_plugins} || []}) {
+        next if grep {$required eq $_} @enabled;
+
+        warn <<"EOT";
+
+**** Warning: $name requires that the $required plugin be installed and
+              enabled; it is not currently in \@Plugins.
+
+EOT
+    }
+}
+
 1;

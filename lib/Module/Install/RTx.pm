@@ -54,6 +54,9 @@ sub RTx {
     my $lib_path = File::Basename::dirname( $INC{'RT.pm'} );
     unshift @INC, $lib_path;
 
+    # Set a baseline minimum version
+    $self->requires_rt('4.0.0');
+
     # Installation locations
     my %path;
     $path{$_} = $RT::LocalPluginPath . "/$name/$_"
@@ -85,8 +88,11 @@ lexicons ::
 .
     }
 
+    $self->load('RTxPlugin');
+    $self->include_deps( 'YAML::Tiny', 0 ) if $self->admin;
     my $postamble = << ".";
 install ::
+\t\$(NOECHO) \$(PERL) -Ilib -I"$local_lib_path" -I"$lib_path" -Minc::Module::Install -e"RTxPlugin()"
 \t\$(NOECHO) \$(PERL) -MExtUtils::Install -e \"install({$args})\"
 .
 
@@ -144,7 +150,6 @@ install ::
         }
     }
 
-    $self->requires_rt('4.0.0');
 }
 
 sub requires_rt {

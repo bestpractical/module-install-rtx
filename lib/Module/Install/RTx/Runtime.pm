@@ -7,10 +7,7 @@ use File::Basename ();
 sub RTxDatabase {
     my ($self, $action, $name, $version) = @_;
 
-    unshift @INC, substr(delete($INC{'RT.pm'}), 0, -5) if $INC{'RT.pm'};
-
     require RT;
-    unshift @INC, "$RT::LocalPath/lib" if $RT::LocalPath;
 
     $RT::SbinPath ||= $RT::LocalPath;
     $RT::SbinPath =~ s/local$/sbin/;

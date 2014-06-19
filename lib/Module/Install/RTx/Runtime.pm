@@ -9,11 +9,6 @@ sub RTxDatabase {
 
     require RT;
 
-    foreach my $file ($RT::CORE_CONFIG_FILE, $RT::SITE_CONFIG_FILE) {
-        next if !-e $file or -r $file;
-        die "No permission to read $file\n-- please re-run $0 with suitable privileges.\n";
-    }
-
     RT::LoadConfig();
 
     require RT::System;

@@ -4,9 +4,7 @@ use Module::Install::Base; @ISA = qw(Module::Install::Base);
 use strict;
 use File::Basename ();
 
-sub RTxDatabase {
-    my ($self, $action, $name, $version) = @_;
-
+sub _rt_runtime_load {
     require RT;
 
     eval { RT::LoadConfig(); };
@@ -20,6 +18,12 @@ EOT
         $err =~ s/This usually means.*/$warn/s;
         die $err;
     }
+}
+
+sub RTxDatabase {
+    my ($self, $action, $name, $version) = @_;
+
+    $self->_rt_runtime_load;
 
     require RT::System;
     my $has_upgrade = RT::System->can('AddUpgradeHistory');

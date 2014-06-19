@@ -198,12 +198,12 @@ sub requires_rt {
 sub requires_rt_plugin {
     my $self = shift;
     my ( $plugin ) = @_;
-    $plugin =~ s{\:\:}{-}g;
-    my $path_to_pluginlib = $RT::LocalPluginPath
-        || $RT::LocalPath . '/plugins';
-       $path_to_pluginlib .= '/' . $plugin . '/lib';
-    if ( -e $path_to_pluginlib ) {
-        unshift @INC, $path_to_pluginlib;
+
+    my $path = $plugin;
+    $path =~ s{\:\:}{-}g;
+    $path = "RT::LocalPluginPath/$path/lib";
+    if ( -e $path ) {
+        unshift @INC, $path;
     }
     $self->requires(@_);
 }

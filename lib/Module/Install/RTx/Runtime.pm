@@ -9,9 +9,6 @@ sub RTxDatabase {
 
     require RT;
 
-    $RT::SbinPath ||= $RT::LocalPath;
-    $RT::SbinPath =~ s/local$/sbin/;
-
     foreach my $file ($RT::CORE_CONFIG_FILE, $RT::SITE_CONFIG_FILE) {
         next if !-e $file or -r $file;
         die "No permission to read $file\n-- please re-run $0 with suitable privileges.\n";

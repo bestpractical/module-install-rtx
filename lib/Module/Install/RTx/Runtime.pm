@@ -24,9 +24,9 @@ EOT
     require RT::System;
 
     my $lib_path = File::Basename::dirname($INC{'RT.pm'});
-    my @args = ("-Ilib");
-    push @args, "-I$RT::LocalPath/lib" if $RT::LocalPath;
-    push @args, (
+    my @args = (
+        "-Ilib",
+        "-I$RT::LocalLibPath",
         "-I$lib_path",
         "$RT::SbinPath/rt-setup-database",
         "--action"      => $action,

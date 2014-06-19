@@ -9,7 +9,17 @@ sub RTxDatabase {
 
     require RT;
 
-    RT::LoadConfig();
+    eval { RT::LoadConfig(); };
+    if (my $err = $@) {
+        die $err unless $err =~ /^RT couldn't load RT config file/m;
+        my $warn = <<EOT;
+This usually means that your current user cannot read the file.  You
+will likely need to run this installation step as root, or some user
+with more permissions.
+EOT
+        $err =~ s/This usually means.*/$warn/s;
+        die $err;
+    }
 
     require RT::System;
 

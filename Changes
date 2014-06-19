@@ -1,4 +1,8 @@
-0.34_01 2014-06-17
+0.34_02 2014-06-19
+ - Fix requires_rt_plugin
+ - Standardize error messages for rt_too_new and requires_rt
+
+0.34_01 2014-06-19
  - Remove RT 3.8-specific code
  - Update documentation to reflect 3.8-era Plugin world order
  - Add requires_rt_plugin helper

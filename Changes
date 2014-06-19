@@ -1,3 +1,6 @@
+0.34_03 2014-06-19
+ - Stop runtime code from clearing out inc/ if run as an author
+
 0.34_02 2014-06-19
  - Fix requires_rt_plugin
  - Standardize error messages for rt_too_new and requires_rt

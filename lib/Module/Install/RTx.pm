@@ -191,7 +191,7 @@ sub requires_rt_plugin {
 
     my $path = $plugin;
     $path =~ s{\:\:}{-}g;
-    $path = "RT::LocalPluginPath/$path/lib";
+    $path = "$RT::LocalPluginPath/$path/lib";
     if ( -e $path ) {
         unshift @INC, $path;
     } else {

@@ -1,3 +1,6 @@
+0.34_04 2014-06-26
+ - Automatically generate a README
+
 0.34_03 2014-06-19
  - Stop runtime code from clearing out inc/ if run as an author
 

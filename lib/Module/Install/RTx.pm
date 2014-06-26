@@ -29,6 +29,8 @@ sub RTx {
         unless $self->version;
     $self->abstract("$name Extension")
         unless $self->abstract;
+    $self->readme_from( "lib/$fname.pm",
+                        { options => [ quotes => "none" ] } );
     $self->add_metadata("x_module_install_rtx_version", $VERSION );
 
     # Try to find RT.pm

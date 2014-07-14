@@ -47,10 +47,10 @@ sub RTx {
 
         warn
             "Cannot find the location of RT.pm that defines \$RT::LocalPath in: @look\n";
-        $_ = $self->prompt("Path to directory containing your RT.pm:") or exit;
-        $_ =~ s{/RT\.pm$}{};
-        $_ =~ s{/lib/?$}{};
-        @try = ($_, "$_/lib");
+        my $given = $self->prompt("Path to directory containing your RT.pm:") or exit;
+        $given =~ s{/RT\.pm$}{};
+        $given =~ s{/lib/?$}{};
+        @try = ($given, "$given/lib");
     }
 
     print "Using RT configuration from $INC{'RT.pm'}:\n";

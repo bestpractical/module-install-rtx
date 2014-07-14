@@ -35,6 +35,8 @@ sub RTx {
 
     # Try to find RT.pm
     my @prefixes = qw( /opt /usr/local /home /usr /sw );
+    $ENV{RTHOME} =~ s{/RT\.pm$}{} if defined $ENV{RTHOME};
+    $ENV{RTHOME} =~ s{/lib/?$}{}  if defined $ENV{RTHOME};
     my @try = $ENV{RTHOME} ? ($ENV{RTHOME}, "$ENV{RTHOME}/lib") : ();
     while (1) {
         my @look = @INC;
@@ -46,8 +48,9 @@ sub RTx {
         warn
             "Cannot find the location of RT.pm that defines \$RT::LocalPath in: @look\n";
         $_ = $self->prompt("Path to directory containing your RT.pm:") or exit;
-        $_ =~ s{(/lib)?/RT\.pm$}{};
-        @try = ("$_/rt4/lib", "$_/lib/rt4", "$_/lib");
+        $_ =~ s{/RT\.pm$}{};
+        $_ =~ s{/lib/?$}{};
+        @try = ($_, "$_/lib");
     }
 
     print "Using RT configuration from $INC{'RT.pm'}:\n";

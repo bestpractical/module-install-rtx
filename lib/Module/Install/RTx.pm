@@ -34,7 +34,7 @@ sub RTx {
     $self->add_metadata("x_module_install_rtx_version", $VERSION );
 
     # Try to find RT.pm
-    my @prefixes = qw( /opt /usr/local /home /usr /sw );
+    my @prefixes = qw( /opt /usr/local /home /usr /sw /usr/share/request-tracker4);
     $ENV{RTHOME} =~ s{/RT\.pm$}{} if defined $ENV{RTHOME};
     $ENV{RTHOME} =~ s{/lib/?$}{}  if defined $ENV{RTHOME};
     my @try = $ENV{RTHOME} ? ($ENV{RTHOME}, "$ENV{RTHOME}/lib") : ();

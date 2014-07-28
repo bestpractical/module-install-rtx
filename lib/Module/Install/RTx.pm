@@ -7,7 +7,7 @@ no warnings 'once';
 
 use Module::Install::Base;
 use base 'Module::Install::Base';
-our $VERSION = '0.34_05';
+our $VERSION = '0.35';
 
 use FindBin;
 use File::Glob     ();

@@ -1,3 +1,6 @@
+0.34 2014-07-28
+ - No changes since 0.34_05
+
 0.34_05 2014-07-14
  - Apply consistent transformations to RTHOME as we do when prompting
  - Check Debian request-tracker4 install location by default as well

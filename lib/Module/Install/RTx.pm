@@ -7,7 +7,7 @@ no warnings 'once';
 
 use Module::Install::Base;
 use base 'Module::Install::Base';
-our $VERSION = '0.35';
+our $VERSION = '0.35_01';
 
 use FindBin;
 use File::Glob     ();
@@ -17,7 +17,8 @@ my @DIRS = qw(etc lib html static bin sbin po var);
 my @INDEX_DIRS = qw(lib bin sbin);
 
 sub RTx {
-    my ( $self, $name ) = @_;
+    my ( $self, $name, $extra_args ) = @_;
+    $extra_args ||= {};
 
     # Set up names
     my $fname = $name;
@@ -29,8 +30,10 @@ sub RTx {
         unless $self->version;
     $self->abstract("$name Extension")
         unless $self->abstract;
-    $self->readme_from( "lib/$fname.pm",
-                        { options => [ quotes => "none" ] } );
+    unless ( $extra_args->{no_readme_generation} ) {
+        $self->readme_from( "lib/$fname.pm",
+                            { options => [ quotes => "none" ] } );
+    }
     $self->add_metadata("x_module_install_rtx_version", $VERSION );
 
     # Try to find RT.pm
@@ -61,7 +64,9 @@ sub RTx {
     unshift @INC, $lib_path;
 
     # Set a baseline minimum version
-    $self->requires_rt('4.0.0');
+    unless ( $extra_args->{deprecated_rt} ) {
+        $self->requires_rt('4.0.0');
+    }
 
     # Installation locations
     my %path;
@@ -286,6 +291,19 @@ they exist (assuming C<RTx('RT-Extension-Example')>):
     ./sbin   => $RT::LocalPluginPath/RT-Extension-Example/sbin
     ./static => $RT::LocalPluginPath/RT-Extension-Example/static
     ./var    => $RT::LocalPluginPath/RT-Extension-Example/var
+
+Accepts an optional argument hashref after the extension name with two possible keys
+
+=item deprecated_rt
+
+    If set to a true value, skips the enforced RT-4.0.0 minimum version check
+
+    You should set a perl_version if using this option and requires_rt(), because requires_rt
+    only handles figuring our what perl you need if you're on RT 4.0.0 or higher.
+
+=item no_readme_generation
+
+    If set to a true value, will not call readme_from on the extension's primary perl module.
 
 =head2 requires_rt I<version>
 

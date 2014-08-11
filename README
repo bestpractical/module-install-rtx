@@ -29,6 +29,18 @@ DESCRIPTION
         ./static => $RT::LocalPluginPath/RT-Extension-Example/static
         ./var    => $RT::LocalPluginPath/RT-Extension-Example/var
 
+    Accepts an optional argument hashref after the extension name with two
+    possible keys
+
+    deprecated_rt
+            If set to a true value, skips the enforced RT-4.0.0 minimum version check
+
+            You should set a perl_version if using this option and requires_rt(), because requires_rt
+            only handles figuring our what perl you need if you're on RT 4.0.0 or higher.
+
+    no_readme_generation
+            If set to a true value, will not call readme_from on the extension's primary perl module.
+
   requires_rt *version*
     Takes one argument, a valid RT version. If an attempt is made to install
     on an RT than that version, it will die before Makefile creation.
@@ -91,4 +103,14 @@ COPYRIGHT
     CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+POD ERRORS
+    Hey! The above document had some coding errors, which are explained
+    below:
+
+    Around line 297:
+        '=item' outside of any '=over'
+
+    Around line 308:
+        You forgot a '=back' before '=head2'
 

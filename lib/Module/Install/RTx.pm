@@ -294,14 +294,14 @@ they exist (assuming C<RTx('RT-Extension-Example')>):
 
 Accepts an optional argument hashref after the extension name with two possible keys
 
-=item deprecated_rt
+=head2 deprecated_rt
 
     If set to a true value, skips the enforced RT-4.0.0 minimum version check
 
     You should set a perl_version if using this option and requires_rt(), because requires_rt
     only handles figuring our what perl you need if you're on RT 4.0.0 or higher.
 
-=item no_readme_generation
+=head2 no_readme_generation
 
     If set to a true value, will not call readme_from on the extension's primary perl module.
 

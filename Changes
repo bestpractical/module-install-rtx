@@ -1,4 +1,8 @@
-0.34 2014-07-28
+0.36 2014-09-02
+ - Add deprecated_rt and no_readme_generation flags to RTx()
+ - Alter the right structures when requires_rt_plugin is called twice
+
+0.35 2014-07-28
  - No changes since 0.34_05
 
 0.34_05 2014-07-14

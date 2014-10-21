@@ -4,6 +4,7 @@ name	        'Module-Install-RTx';
 author          'Best Practical Solutions';
 all_from        'lib/Module/Install/RTx.pm';
 requires        'Module::Install::Admin' => 0.40;
+requires        'Modules::Install::ReadmeFromPod';
 readme_from     'lib/Module/Install/RTx.pm';
 
 auto_provides;

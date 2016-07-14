@@ -1,3 +1,7 @@
+0.38 2016-07-14
+ - Support `INSTALLDIRS=vendor`
+ - Properly honor `$DESTDIR` at `make install` time
+
 0.37 2014-12-24
  - Add the Module::Install::ReadmeFromPod dependency
 

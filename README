@@ -60,6 +60,26 @@ DESCRIPTION
     error message. This message is passed to sprintf with two string
     arguments, the current RT version and the version you specify.
 
+  remove_files
+    If set to a true value, during installation any files listed in a
+    "remove_files" file will be removed from the destination directories.
+    This feature is for removing files that have been deleted or moved in
+    the current version and leaving the old version in place when upgrading
+    can cause problems.
+
+    RTx looks for a "remove_files" file in the etc/upgrade directory of the
+    distribution. The format of the "remove_files" file is as follows:
+
+        package Module::Install::RTx;
+
+        @remove_files = qw(
+        html/dir/file_to_remove
+        );
+        1;
+
+    The file locations are relative to the distribution. The destination
+    directory prefix is added automatically.
+
 CAVEATS
     *   Us the full name when calling RTx method in Makefile.PL; while
         "RTx('Foo')" was once supported, it is no longer.

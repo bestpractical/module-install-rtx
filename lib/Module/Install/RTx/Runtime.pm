@@ -1,10 +1,14 @@
 package Module::Install::RTx::Runtime;
 
 use base 'Exporter';
-our @EXPORT = qw/RTxDatabase RTxPlugin/;
+our @EXPORT = qw/RTxDatabase RTxPatch RTxPlugin/;
 
 use strict;
 use File::Basename ();
+use POSIX qw (WIFEXITED);
+use File::Find;
+use Carp;
+
 
 sub _rt_runtime_load {
     require RT;
@@ -52,6 +56,27 @@ sub RTxDatabase {
 
     print "$^X @args\n";
     (system($^X, @args) == 0) or die "...returned with error: $?\n";
+}
+
+sub RTxPatch {
+    my ($patch, $dir) = @_;
+
+    _rt_runtime_load();
+
+    my $cmd = "$patch -d $RT::BasePath -p1 < ";
+
+    # Anonymous subroutine to apply all patches in a directory structure
+    my $patch_rt = sub {
+
+        return unless -f $_;
+        if ($_ =~ m/.patch/xms) {
+            WIFEXITED(system($cmd . $_))
+                or croak "Couldn't run: $cmd $_ ($?)\n";
+        }
+    };
+
+    find {wanted => $patch_rt}, $dir;
+
 }
 
 sub RTxPlugin {

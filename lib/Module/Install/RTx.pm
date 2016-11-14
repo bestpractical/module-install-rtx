@@ -139,6 +139,11 @@ install ::
         $has_etc{upgrade}++;
     }
 
+    my %has_patches;
+    if ( -d 'patches' ) {
+        $has_patches{patches}++;
+    }
+
     $self->postamble("$postamble\n");
     if ( $path{lib} ) {
         $self->makemaker_args( INSTALLSITELIB => $path{'lib'} );
@@ -179,6 +184,12 @@ install ::
             $self->postamble("upgrade-database ::\n$upgradedb\n");
             $self->postamble("upgradedb ::\n$upgradedb\n");
         }
+    }
+
+    if (%has_patches) {
+        print "For first-time installation, type 'make patch'.\n";
+        my $patch = qq|\t\$(NOECHO) \$(PERL) -Ilib -I"$local_lib_path" -I"$lib_path" -Iinc -MModule::Install::RTx::Runtime -e"RTxPatch(qw(/usr/bin/patch ./patches))"\n|;
+        $self->postamble("patch ::\n$patch\n");
     }
 
 }
@@ -304,14 +315,17 @@ installing RT extensions:
 This function arranges for the following directories to be installed, if
 they exist (assuming C<RTx('RT-Extension-Example')>):
 
-    ./bin    => $RT::LocalPluginPath/RT-Extension-Example/bin
-    ./etc    => $RT::LocalPluginPath/RT-Extension-Example/etc
-    ./html   => $RT::LocalPluginPath/RT-Extension-Example/html
-    ./lib    => $RT::LocalPluginPath/RT-Extension-Example/lib
-    ./po     => $RT::LocalPluginPath/RT-Extension-Example/po
-    ./sbin   => $RT::LocalPluginPath/RT-Extension-Example/sbin
-    ./static => $RT::LocalPluginPath/RT-Extension-Example/static
-    ./var    => $RT::LocalPluginPath/RT-Extension-Example/var
+    ./bin       => $RT::LocalPluginPath/RT-Extension-Example/bin
+    ./etc       => $RT::LocalPluginPath/RT-Extension-Example/etc
+    ./html      => $RT::LocalPluginPath/RT-Extension-Example/html
+    ./lib       => $RT::LocalPluginPath/RT-Extension-Example/lib
+    ./po        => $RT::LocalPluginPath/RT-Extension-Example/po
+    ./sbin      => $RT::LocalPluginPath/RT-Extension-Example/sbin
+    ./static    => $RT::LocalPluginPath/RT-Extension-Example/static
+    ./var       => $RT::LocalPluginPath/RT-Extension-Example/var
+    ./patches   => If this directory/sub directory(s) contain one or more
+                   p1 unified diffs they will be applied to the RT
+                   installation. Invoked in your plugin as make patch
 
 Accepts an optional argument hashref after the extension name with two possible keys
 

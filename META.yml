@@ -22,6 +22,8 @@ provides:
   Module::Install::RTx:
     file: lib/Module/Install/RTx.pm
     version: '0.38'
+  Module::Install::RTx::Remove:
+    file: lib/Module/Install/RTx/Remove.pm
   Module::Install::RTx::Runtime:
     file: lib/Module/Install/RTx/Runtime.pm
 requires:

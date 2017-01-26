@@ -112,11 +112,29 @@ lexicons ::
 .
     }
 
+    my $remove_files;
+    if( $extra_args->{'remove_files'} ){
+        $self->include('Module::Install::RTx::Remove');
+        our @remove_files;
+        eval { require "etc/upgrade/remove_files" }
+          or print "No remove file located, no files to remove\n";
+        $remove_files = join ",", map {"q(\$(DESTDIR)$plugin_path/$name/$_)"} @remove_files;
+    }
+
     $self->include('Module::Install::RTx::Runtime') if $self->admin;
     $self->include_deps( 'YAML::Tiny', 0 ) if $self->admin;
     my $postamble = << ".";
 install ::
 \t\$(NOECHO) \$(PERL) -Ilib -I"$local_lib_path" -I"$lib_path" -Iinc -MModule::Install::RTx::Runtime -e"RTxPlugin()"
+.
+
+    if( $remove_files ){
+        $postamble .= << ".";
+\t\$(NOECHO) \$(PERL) -MModule::Install::RTx::Remove -e \"RTxRemove([$remove_files])\"
+.
+    }
+
+    $postamble .= << ".";
 \t\$(NOECHO) \$(PERL) -MExtUtils::Install -e \"install({$args})\"
 .
 
@@ -347,6 +365,28 @@ not 4.2.x.
 Takes an optional second argument which allows you to specify a custom
 error message. This message is passed to sprintf with two string
 arguments, the current RT version and the version you specify.
+
+=head2 remove_files
+
+If set to a true value, during installation any files listed in a
+C<remove_files> file will be removed from the destination directories.
+This feature is for removing files that have been deleted or moved in
+the current version and leaving the old version in place when upgrading
+can cause problems.
+
+RTx looks for a C<remove_files> file in the etc/upgrade directory of
+the distribution. The format of the C<remove_files> file is as
+follows:
+
+    package Module::Install::RTx;
+
+    @remove_files = qw(
+    html/dir/file_to_remove
+    );
+    1;
+
+The file locations are relative to the distribution. The destination
+directory prefix is added automatically.
 
 =head1 CAVEATS
 

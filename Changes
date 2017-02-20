@@ -1,3 +1,7 @@
+0.39 2017-02-20
+- Support `remove_files => 1` parameter to force unlinking of files
+  provided by previous versions
+
 0.38 2016-07-14
  - Support `INSTALLDIRS=vendor`
  - Properly honor `$DESTDIR` at `make install` time

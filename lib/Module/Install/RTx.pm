@@ -188,8 +188,12 @@ install ::
 
     if (%has_patches) {
         print "For first-time installation, type 'make patch'.\n";
-        my $patch = qq|\t\$(NOECHO) \$(PERL) -Ilib -I"$local_lib_path" -I"$lib_path" -Iinc -MModule::Install::RTx::Runtime -e"RTxPatch(qw(/usr/bin/patch ./patches))"\n|;
+        my $patch = qq|\t\$(NOECHO) \$(PERL) -Ilib -I"$local_lib_path" -I"$lib_path" -Iinc -MModule::Install::RTx::Runtime -e"RTxPatch(qw(/usr/bin/patch apply ./patches))"\n|;
         $self->postamble("patch ::\n$patch\n");
+
+        print "For patch removal, type 'make unpatch'.\n";
+        my $unpatch = qq|\t\$(NOECHO) \$(PERL) -Ilib -I"$local_lib_path" -I"$lib_path" -Iinc -MModule::Install::RTx::Runtime -e"RTxPatch(qw(/usr/bin/patch remove ./patches))"\n|;
+        $self->postamble("unpatch ::\n$unpatch\n");
     }
 
 }

@@ -156,11 +156,18 @@ sub RTxDatabase {
 }
 
 sub RTxPatch {
-    my ($patch, $dir) = @_;
+    my ($patch, $action, $dir) = @_;
+    my @cmd;
 
     _rt_runtime_load();
 
-    my @cmd = ($patch, '-d', $RT::BasePath, '-p1', '-i');
+    # Check to see if we are adding or removing a patch set
+    if ( $action =~ m/\Aapply\z/xms ) {
+        @cmd = ($patch, '-d', $RT::BasePath, '-p1', '-i');
+    }
+    else {
+        @cmd = ($patch, '-R', '-d', $RT::BasePath, '-p1', '-i');
+    }
 
     # Anonymous subroutine to apply all patches in a directory structure
     my $patch_rt = sub {

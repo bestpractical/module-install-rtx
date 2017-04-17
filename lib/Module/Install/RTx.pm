@@ -128,6 +128,9 @@ install ::
     }
 
     my %has_etc;
+    if ( File::Glob::bsd_glob("$FindBin::Bin/etc/*.pm") ) {
+        $has_etc{config}++;
+    }
     if ( File::Glob::bsd_glob("$FindBin::Bin/etc/schema.*") ) {
         $has_etc{schema}++;
     }
@@ -160,6 +163,12 @@ install ::
     $self->makemaker_args( INSTALLVENDORARCH => "/usr/share/man" );
 
     if (%has_etc) {
+        if ($has_etc{config}) {
+            print "For first-time installation, type 'make init-config'.\n";
+            my $initconfig = qq|\t\$(NOECHO) \$(PERL) -Ilib -I"$local_lib_path" -I"$lib_path" -Iinc -MModule::Install::RTx::Runtime -e"RTxConfig(qw(\$(DISTNAME)))"\n|;
+            $self->postamble("init-config ::\n$initconfig\n");
+        }
+
         print "For first-time installation, type 'make initdb'.\n";
         my $initdb = '';
         $initdb .= <<"." if $has_etc{schema};

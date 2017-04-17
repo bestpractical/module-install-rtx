@@ -1,10 +1,11 @@
 package Module::Install::RTx::Runtime;
 
 use base 'Exporter';
-our @EXPORT = qw/RTxDatabase RTxPlugin/;
+our @EXPORT = qw/RTxDatabase RTxConfig RTxPlugin/;
 
 use strict;
 use File::Basename ();
+use File::Copy;
 
 sub _rt_runtime_load {
     require RT;
@@ -52,6 +53,22 @@ sub RTxDatabase {
 
     print "$^X @args\n";
     (system($^X, @args) == 0) or die "...returned with error: $?\n";
+}
+
+sub RTxConfig {
+    my $name = shift;
+
+    _rt_runtime_load();
+
+    my $src = join('/', $RT::LocalPluginPath, $name, 'etc', $name);
+    my $dst = join('/', $RT::EtcPath, 'RT_SiteConfig.d', $name);
+
+    $src .= ".pm";
+    $dst .= ".pm";
+
+    copy($src, $dst) or die "Install of configuration failed: $!\n"
+                            . "You did run make install first??";
+
 }
 
 sub RTxPlugin {

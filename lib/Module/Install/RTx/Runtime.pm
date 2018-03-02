@@ -50,7 +50,6 @@ sub RTxDatabase {
         push @args, "--package" => $name;
     }
 
-    local $ENV{PERL_USE_UNSAFE_INC} = 1;
     print "$^X @args\n";
     (system($^X, @args) == 0) or die "...returned with error: $?\n";
 }

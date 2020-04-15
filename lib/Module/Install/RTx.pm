@@ -413,14 +413,14 @@ Path to the RT installation that contains a valid F<lib/RT.pm>.
 
 To install an extension which makes use of this installer:
 
-    perl Makefile.PL RTHOME=/opt/rt4
+    perl Makefile.PL RTHOME=/opt/rt5
 
 This will install all subdirs into the $RT::LocalPluginPath dir
 as configured in RT::Generated.
 
 To install an extension into the (vendor) plugin path:
 
-    perl Makefile.PL RTHOME=/opt/rt4 INSTALLDIRS=vendor
+    perl Makefile.PL RTHOME=/opt/rt5 INSTALLDIRS=vendor
 
 This will install all subdirs into the $RT::PluginPath which is specifically
 meant for plugins that are installed through other packaging utils like

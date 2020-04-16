@@ -441,7 +441,7 @@ Best Practical Solutions
 =head1 COPYRIGHT
 
 Copyright 2003, 2004, 2007 by Audrey Tang E<lt>cpan@audreyt.orgE<gt>.
-Copyright 2008-2014 Best Practical Solutions
+Copyright 2008-2020 Best Practical Solutions
 
 This software is released under the MIT license cited below.
 

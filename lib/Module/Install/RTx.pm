@@ -75,6 +75,17 @@ sub RTx {
         $self->requires_rt('4.0.0');
     }
 
+    my $package = $name;
+    $package =~ s/-/::/g;
+    if ( $RT::CORED_PLUGINS{$package} ) {
+        die <<"EOT";
+
+**** Error: Your installed version of RT ($RT::VERSION) already
+            contains this extension in core.
+
+EOT
+    }
+
     # Installation locations
     my %path;
     my $plugin_path;

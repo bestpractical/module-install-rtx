@@ -263,8 +263,8 @@ sub rt_too_new {
     my $name = $self->name;
     $msg ||= <<EOT;
 
-**** Error: Your installed version of RT (%s) is too new; this extension
-            only works with versions older than %s.
+**** Warning: Your installed version of RT (%s) is too new; this extension
+              has not been tested on your version of RT and may not work as expected.
 
 EOT
     $self->add_metadata("x_rt_too_new", $version) if $self->is_admin;
@@ -273,7 +273,7 @@ EOT
     my @sorted = sort RT::Handle::cmp_version $version,$RT::VERSION;
 
     if ($sorted[0] eq $version) {
-        die sprintf($msg,$RT::VERSION,$version);
+        warn sprintf($msg,$RT::VERSION);
     }
 }
 

@@ -5,6 +5,7 @@ use strict;
 use warnings;
 no warnings 'once';
 
+use Term::ANSIColor qw(:constants);
 use Module::Install::Base;
 use base 'Module::Install::Base';
 our $VERSION = '0.41';
@@ -248,12 +249,12 @@ sub requires_rt_plugin {
         unshift @INC, $path;
     } else {
         my $name = $self->name;
-        warn <<"EOT";
+        my $msg = <<"EOT";
 
 **** Warning: $name requires that the $plugin plugin be installed and
               enabled; it does not appear to be installed.
-
 EOT
+        warn RED, $msg, RESET, "\n";
     }
     $self->requires(@_);
 }
@@ -263,9 +264,8 @@ sub rt_too_new {
     my $name = $self->name;
     $msg ||= <<EOT;
 
-**** Error: Your installed version of RT (%s) is too new; this extension
-            only works with versions older than %s.
-
+**** Warning: Your installed version of RT (%s) is too new; this extension
+              has not been tested on your version of RT and may not work as expected.
 EOT
     $self->add_metadata("x_rt_too_new", $version) if $self->is_admin;
 
@@ -273,7 +273,7 @@ EOT
     my @sorted = sort RT::Handle::cmp_version $version,$RT::VERSION;
 
     if ($sorted[0] eq $version) {
-        die sprintf($msg,$RT::VERSION,$version);
+        warn RED, sprintf($msg,$RT::VERSION), RESET, "\n";
     }
 }
 

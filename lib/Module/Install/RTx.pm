@@ -80,7 +80,7 @@ sub RTx {
     $package =~ s/-/::/g;
     if ( $RT::CORED_PLUGINS{$package} ) {
         my ($base_version) = $RT::VERSION =~ /(\d+\.\d+\.\d+)/;
-        die <<"EOT";
+        die RED, <<"EOT";
 
 **** Error: Your installed version of RT ($RT::VERSION) already
             contains this extension in core, so you don't need to
@@ -239,7 +239,7 @@ sub requires_rt {
     my @sorted = sort RT::Handle::cmp_version $version,$RT::VERSION;
 
     if ($sorted[-1] eq $version) {
-        die <<"EOT";
+        die RED, <<"EOT";
 
 **** Error: This extension requires RT $version. Your installed version
             of RT ($RT::VERSION) is too old.

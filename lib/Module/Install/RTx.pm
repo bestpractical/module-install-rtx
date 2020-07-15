@@ -8,7 +8,7 @@ no warnings 'once';
 use Term::ANSIColor qw(:constants);
 use Module::Install::Base;
 use base 'Module::Install::Base';
-our $VERSION = '0.41';
+our $VERSION = '0.42';
 
 use FindBin;
 use File::Glob     ();

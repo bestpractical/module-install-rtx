@@ -76,6 +76,22 @@ sub RTx {
         $self->requires_rt('4.0.0');
     }
 
+    my $package = $name;
+    $package =~ s/-/::/g;
+    if ( $RT::CORED_PLUGINS{$package} ) {
+        my ($base_version) = $RT::VERSION =~ /(\d+\.\d+\.\d+)/;
+        die RED, <<"EOT";
+
+**** Error: Your installed version of RT ($RT::VERSION) already
+            contains this extension in core, so you don't need to
+            install it.
+
+            Check https://docs.bestpractical.com/rt/$base_version/RT_Config.html
+            to configure it.
+
+EOT
+    }
+
     # Installation locations
     my %path;
     my $plugin_path;
@@ -223,7 +239,7 @@ sub requires_rt {
     my @sorted = sort RT::Handle::cmp_version $version,$RT::VERSION;
 
     if ($sorted[-1] eq $version) {
-        die <<"EOT";
+        die RED, <<"EOT";
 
 **** Error: This extension requires RT $version. Your installed version
             of RT ($RT::VERSION) is too old.

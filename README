@@ -20,14 +20,17 @@ DESCRIPTION
     This function arranges for the following directories to be installed, if
     they exist (assuming "RTx('RT-Extension-Example')"):
 
-        ./bin    => $RT::LocalPluginPath/RT-Extension-Example/bin
-        ./etc    => $RT::LocalPluginPath/RT-Extension-Example/etc
-        ./html   => $RT::LocalPluginPath/RT-Extension-Example/html
-        ./lib    => $RT::LocalPluginPath/RT-Extension-Example/lib
-        ./po     => $RT::LocalPluginPath/RT-Extension-Example/po
-        ./sbin   => $RT::LocalPluginPath/RT-Extension-Example/sbin
-        ./static => $RT::LocalPluginPath/RT-Extension-Example/static
-        ./var    => $RT::LocalPluginPath/RT-Extension-Example/var
+        ./bin       => $RT::LocalPluginPath/RT-Extension-Example/bin
+        ./etc       => $RT::LocalPluginPath/RT-Extension-Example/etc
+        ./html      => $RT::LocalPluginPath/RT-Extension-Example/html
+        ./lib       => $RT::LocalPluginPath/RT-Extension-Example/lib
+        ./po        => $RT::LocalPluginPath/RT-Extension-Example/po
+        ./sbin      => $RT::LocalPluginPath/RT-Extension-Example/sbin
+        ./static    => $RT::LocalPluginPath/RT-Extension-Example/static
+        ./var       => $RT::LocalPluginPath/RT-Extension-Example/var
+        ./patches   => If this directory/sub directory(s) contain one or more
+                       p1 unified diffs they will be applied to the RT
+                       installation. Invoked in your plugin as make patch
 
     Accepts an optional argument hashref after the extension name with two
     possible keys

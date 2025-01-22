@@ -8,7 +8,7 @@ no warnings 'once';
 use Term::ANSIColor qw(:constants);
 use Module::Install::Base;
 use base 'Module::Install::Base';
-our $VERSION = '0.43';
+our $VERSION = '0.44';
 
 use FindBin;
 use File::Glob     ();
@@ -457,7 +457,7 @@ Best Practical Solutions
 =head1 COPYRIGHT
 
 Copyright 2003, 2004, 2007 by Audrey Tang E<lt>cpan@audreyt.orgE<gt>.
-Copyright 2008-2020 Best Practical Solutions
+Copyright 2008-2025 Best Practical Solutions
 
 This software is released under the MIT license cited below.
 

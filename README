@@ -18,7 +18,7 @@ DESCRIPTION
 
   RTx '*extension name*'
     This function arranges for the following directories to be installed, if
-    they exist (assuming "RTx('RT-Extension-Example')"):
+    they exist (assuming RTx('RT-Extension-Example')):
 
         ./bin    => $RT::LocalPluginPath/RT-Extension-Example/bin
         ./etc    => $RT::LocalPluginPath/RT-Extension-Example/etc
@@ -82,7 +82,7 @@ DESCRIPTION
 
 CAVEATS
     *   Us the full name when calling RTx method in Makefile.PL; while
-        "RTx('Foo')" was once supported, it is no longer.
+        RTx('Foo') was once supported, it is no longer.
 
 ENVIRONMENT
     RTHOME
@@ -116,7 +116,7 @@ AUTHORS
 
 COPYRIGHT
     Copyright 2003, 2004, 2007 by Audrey Tang <cpan@audreyt.org>. Copyright
-    2008-2020 Best Practical Solutions
+    2008-2025 Best Practical Solutions
 
     This software is released under the MIT license cited below.
 

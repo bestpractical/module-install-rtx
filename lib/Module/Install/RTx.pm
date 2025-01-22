@@ -323,8 +323,8 @@ In the F<Makefile.PL> of the C<RT-Extension-Example> module:
     use inc::Module::Install;
     RTx 'RT-Extension-Example';
 
-    requires_rt '4.2.0';
-    rt_too_new  '4.4.0';
+    requires_rt '5.0.0';
+    rt_too_new  '6.0.0';
 
     WriteAll();
 

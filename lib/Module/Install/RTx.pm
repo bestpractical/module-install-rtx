@@ -53,7 +53,7 @@ sub RTx {
         my @look = @INC;
         unshift @look, grep {defined and -d $_} @try;
         push @look, grep {defined and -d $_}
-            map { ( "$_/rt5/lib", "$_/lib/rt5", "$_/rt4/lib", "$_/lib/rt4", "$_/lib" ) } @prefixes;
+            map { ( "$_/rt6/lib", "$_/lib/rt6", "$_/rt5/lib", "$_/lib/rt5", "$_/rt4/lib", "$_/lib/rt4", "$_/lib" ) } @prefixes;
         last if eval {local @INC = @look; require RT; $RT::LocalLibPath};
 
         warn
@@ -429,14 +429,14 @@ Path to the RT installation that contains a valid F<lib/RT.pm>.
 
 To install an extension which makes use of this installer:
 
-    perl Makefile.PL RTHOME=/opt/rt5
+    perl Makefile.PL RTHOME=/opt/rt6
 
 This will install all subdirs into the $RT::LocalPluginPath dir
 as configured in RT::Generated.
 
 To install an extension into the (vendor) plugin path:
 
-    perl Makefile.PL RTHOME=/opt/rt5 INSTALLDIRS=vendor
+    perl Makefile.PL RTHOME=/opt/rt6 INSTALLDIRS=vendor
 
 This will install all subdirs into the $RT::PluginPath which is specifically
 meant for plugins that are installed through other packaging utils like

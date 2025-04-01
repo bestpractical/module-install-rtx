@@ -5,6 +5,10 @@ our @EXPORT = qw/RTxRemove/;
 
 use strict;
 
+=head1 NAME
+
+Module::Install::RTx::Remove - RT extension installer (remove files)
+
 =head1 DESCRIPTION
 
 Remove specified files. Intended to remove files
